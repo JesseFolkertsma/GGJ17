@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 987377723aba0eb4084e097f675ec421
-timeCreated: 1484952569
+guid: f4345c5f0125206409125eaae85d7c16
+timeCreated: 1484953439
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: KitchenTable
+    4300000: HealthPickUp
   materials:
     importMaterials: 1
     materialName: 0

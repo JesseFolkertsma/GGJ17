@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 987377723aba0eb4084e097f675ec421
-timeCreated: 1484952569
+guid: deff2878bf33d74499ea7fa3d2e93bf6
+timeCreated: 1484952580
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: KitchenTable
+    4300000: GranaatAppel
   materials:
     importMaterials: 1
     materialName: 0
