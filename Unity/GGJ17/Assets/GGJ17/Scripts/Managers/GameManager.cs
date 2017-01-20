@@ -17,28 +17,15 @@ public class GameManager : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-
-        saveLoadSystem = new SaveLoadSystem();
     }
 
-    #region Saving
-    public SaveFile file;
-
-    public static void SaveGame()
+    public void StartGame()
     {
-        instance.saveLoadSystem.SaveGame();
+
     }
 
-    public static bool LoadGame()
+    public void EndGame()
     {
-        instance.file = null;
-        instance.file = instance.saveLoadSystem.LoadGame();
-
-        if (instance.file != null)
-            return true;
-        else
-            return false;
 
     }
-    #endregion
 }
