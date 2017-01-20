@@ -21,5 +21,7 @@ public class HairDryer : MonoBehaviour, IWeapon {
     public void Shoot(Vector3 target)
     {
         Vector3 dir = (shootPoint.position - target).normalized;
+        GameObject wave = Instantiate(radiationWave, shootPoint.position, Quaternion.identity);
+        wave.transform.rotation.SetLookRotation(dir);
     }
 }
