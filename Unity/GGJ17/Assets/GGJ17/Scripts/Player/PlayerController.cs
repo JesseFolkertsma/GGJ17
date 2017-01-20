@@ -28,10 +28,6 @@ namespace Corn.Movement
 
         }
 
-        public void setWeapon(IMovement mov)
-        {
-
-        }
 
         // Use this for initialization
         void Start ()
