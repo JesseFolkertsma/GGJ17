@@ -5,7 +5,11 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     public static GameManager instance;
-    public SaveLoadSystem saveLoadSystem;
+
+    #region GameStats
+    [Header ("GameStats")]
+    public int totalPops;
+    #endregion
 
     void Awake()
     {
@@ -17,6 +21,11 @@ public class GameManager : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+    }
+
+    public void PauzeGame()
+    {
+
     }
 
     public void StartGame()
