@@ -8,7 +8,7 @@ namespace Corn.Movement
     {
         void Move (Vector2 dir_);
 
-        void Rotate (float rot_);
+        void Rotate (float x, float y);
 
         void Run (bool run_);
 
