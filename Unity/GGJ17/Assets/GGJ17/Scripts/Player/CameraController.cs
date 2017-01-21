@@ -10,15 +10,18 @@ public class CameraController : MonoBehaviour {
     public Vector3 offset = new Vector3(0, 2, -2);
     public Vector3 zoomOffset = new Vector3(1, 1.5f, -1f);
     public float followSpeed = 5f;
-        
+
     [SerializeField]
     Transform camPosition;
+    [SerializeField]
+    Transform camRotation;
 
     void Awake()
     {
         PlayerController p = FindObjectOfType<PlayerController>();
         p.cam = this;
-        camPosition = p.transform.FindChild("CameraPosition");
+        camRotation = p.transform.FindChild("CameraRotate");
+        camPosition = camRotation.FindChild("CameraPosition");
     }
 
     public Vector3 GetTarget()
@@ -58,5 +61,10 @@ public class CameraController : MonoBehaviour {
                 isZoomed = !isZoomed;
             }
         }
+    }
+
+    public void Rotate(Vector3 xrot_)
+    {
+        camRotation.Rotate(xrot_);
     }
 }

@@ -10,6 +10,7 @@ namespace Corn.Movement
     {
         #region private fields
         private Rigidbody rb;
+        private Animator anim;
         private int health;
         float xRotationInput;
         float yRotationInput;
@@ -42,6 +43,7 @@ namespace Corn.Movement
         void Start ()
         {
             rb = this.GetComponent<Rigidbody>();
+            anim = this.GetComponent<Animator>();
             PlaceKernals();
         }
         #endregion
@@ -51,6 +53,7 @@ namespace Corn.Movement
         // Update is called once per frame
         void Update ()
         {
+            //MovementInput
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
 
@@ -73,6 +76,9 @@ namespace Corn.Movement
                     currenWeapon.Shoot(cam.GetTarget());
                 }
             }
+
+            //Anim
+            SetupAnim(vertical);
         }
         void FixedUpdate ()
         {
@@ -84,6 +90,11 @@ namespace Corn.Movement
         #endregion
 
         #region public methods
+        void SetupAnim(float mov)
+        {
+            anim.SetFloat("Movement", mov);
+        }
+
         public void Melee ()
         {
 
@@ -99,9 +110,10 @@ namespace Corn.Movement
         public void Rotate (float xRot_ , float yRot_)
         {
             //Debug.Log(yRot_);
-            Vector3 wantedRot = new Vector3(0, yRot_, 0);
-            rb.MoveRotation(rb.rotation * Quaternion.Euler(wantedRot));
-            
+            Vector3 wantedYRot = new Vector3(0, yRot_, 0);
+            rb.MoveRotation(rb.rotation * Quaternion.Euler(wantedYRot));
+            Vector3 wantedXRot = new Vector3(xRot_, 0, 0);
+            cam.Rotate(-wantedXRot * Time.deltaTime * rotationSpeed);
         }
 
         public bool Run ()
