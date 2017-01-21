@@ -14,6 +14,8 @@ namespace Corn.Movement
         private int health;
         float xRotationInput;
         float yRotationInput;
+        float vertical;
+        float horizontal;
         IWeapon currenWeapon;
         [SerializeField]
         Transform rightHand;
@@ -53,16 +55,16 @@ namespace Corn.Movement
         // Update is called once per frame
         void Update ()
         {
+<<<<<<< HEAD
             //MovementInput
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
+=======
+            horizontal = Input.GetAxis("Horizontal");
+            vertical = Input.GetAxis("Vertical");
+>>>>>>> 1c069c3dcf632659974f837f8765c5713f47a32e
 
-            Vector2 direction = new Vector2(horizontal, vertical);
 
-            if (direction != Vector2.zero)
-            {
-                Move(direction);
-            }
 
             yRotationInput = Input.GetAxis("Mouse Y")  * rotationSpeed;
             xRotationInput = Input.GetAxis("Mouse X")  * rotationSpeed;
@@ -86,6 +88,12 @@ namespace Corn.Movement
             {
                 Rotate(xRotationInput * Time.fixedDeltaTime, yRotationInput * Time.fixedDeltaTime);
             }
+            Vector2 direction = new Vector2(horizontal, vertical);
+
+            if (direction != Vector2.zero)
+            {
+                Move(direction);
+            }
         }
         #endregion
 
@@ -103,8 +111,8 @@ namespace Corn.Movement
         public void Move (Vector2 dir_)
         {
             Vector3 moveDirection = new Vector3(dir_.x, 0, dir_.y);
-                            moveDirection = transform.TransformDirection(moveDirection);
-                            rb.velocity = moveDirection * (Run() ? runSpeed : walkSpeed);
+            moveDirection = transform.TransformDirection(moveDirection);
+            rb.velocity = moveDirection * (Run() ? runSpeed : walkSpeed);
         }
 
         public void Rotate (float xRot_ , float yRot_)
@@ -147,6 +155,7 @@ namespace Corn.Movement
             print(currenWeapon);
         }
         #endregion
+
         #region private methods
         private void PlaceKernals ()
         {

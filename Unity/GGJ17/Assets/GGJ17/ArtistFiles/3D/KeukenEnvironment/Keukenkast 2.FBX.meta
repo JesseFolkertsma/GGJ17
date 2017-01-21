@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: fc257b490bdfc31408fb205184ed9a77
-timeCreated: 1485006272
+guid: ad29f806c0be68740891a1761b8ea58b
+timeCreated: 1485004048
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,8 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: KitchenTable
+    4300000: Kast 2
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -72,7 +73,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

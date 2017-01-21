@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: fc257b490bdfc31408fb205184ed9a77
-timeCreated: 1485006272
+guid: 594d7f7760dd9234eafad6dfc0ce8459
+timeCreated: 1485004104
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,9 +9,9 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: KitchenTable
+    4300000: Pan
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:
