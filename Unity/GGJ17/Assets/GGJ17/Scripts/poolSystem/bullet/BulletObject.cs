@@ -28,6 +28,7 @@ public class BulletObject : BasePoolObject {
 
     void OnTriggerEnter(Collider col)
     {
+        print(col);
         col.GetComponent<Kernel>().lives = 0;
     }
 }

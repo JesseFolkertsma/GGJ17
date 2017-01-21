@@ -52,8 +52,6 @@ public class HairDryer : MonoBehaviour, IWeapon {
 
     public void Shoot(Vector3 target)
     {
-        Debug.DrawLine(shootPoint.position, target, Color.red, 10);
-        Debug.Log("Shooting towards: " + target);
         Vector3 dir = (target - shootPoint.position).normalized;
         BulletObject wave = pool.GetPooledObject() as BulletObject;
         wave.ShootBullet(shootPoint.position, Quaternion.LookRotation(dir), lifeTime);
