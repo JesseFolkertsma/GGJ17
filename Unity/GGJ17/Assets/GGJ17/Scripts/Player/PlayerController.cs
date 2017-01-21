@@ -11,6 +11,8 @@ namespace Corn.Movement
         #region private fields
         private Rigidbody rb;
         private int health;
+        float xRotationInput;
+        float yRotationInput;
         #endregion
 
         #region public fields
@@ -37,7 +39,7 @@ namespace Corn.Movement
         #region Update
 
         // Update is called once per frame
-        void FixedUpdate ()
+        void Update ()
         {
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
@@ -49,12 +51,14 @@ namespace Corn.Movement
                 Move(direction);
             }
 
-            float yRotationInput = Input.GetAxisRaw("Mouse Y") * Time.fixedDeltaTime * rotationSpeed;
-            float xRotationInput = Input.GetAxisRaw("Mouse X") * Time.fixedDeltaTime * rotationSpeed;
-
-            if(xRotationInput != 0 || yRotationInput != 0)
+            yRotationInput = Input.GetAxis("Mouse Y")  * rotationSpeed;
+            xRotationInput = Input.GetAxis("Mouse X")  * rotationSpeed;
+        }
+        void FixedUpdate ()
+        {
+            if (xRotationInput != 0 || yRotationInput != 0)
             {
-                Rotate(xRotationInput, yRotationInput);
+                Rotate(xRotationInput * Time.fixedDeltaTime, yRotationInput * Time.fixedDeltaTime);
             }
         }
         #endregion
@@ -75,7 +79,7 @@ namespace Corn.Movement
         public void Rotate (float xRot_ , float yRot_)
         {
             //Debug.Log(yRot_);
-            Vector3 wantedRot = new Vector3(0, rb.rotation.y + yRot_, 0);
+            Vector3 wantedRot = new Vector3(0, yRot_, 0);
             rb.MoveRotation(rb.rotation * Quaternion.Euler(wantedRot));
             
         }
