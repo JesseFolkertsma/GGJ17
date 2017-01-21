@@ -1,6 +1,16 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Unity/GGJ17/Assets/GGJ17/ArtistFiles/3D/ShieldPickUp/ShieldPickUp.mat.meta
 guid: 17fd87b0a9cbed0468c9179dddcdd33d
 timeCreated: 1484954610
+=======
+<<<<<<< HEAD
+guid: ac214a595ec0fc2499505c6e74bd0d97
+timeCreated: 1484952960
+=======
+guid: 150b3d178abec664991b8b10e58ed4de
+timeCreated: 1484953025
+>>>>>>> a00125e11b1ca6012323b5c7775ff032c26d9faf
+>>>>>>> e3e50e10e4a60320911f44c9643d9b69a34f3702:Unity/GGJ17/Assets/GGJ17/ArtistFiles/3D/Föhn/Materials/Föhn.mat.meta
 licenseType: Free
 NativeFormatImporter:
   userData: 
