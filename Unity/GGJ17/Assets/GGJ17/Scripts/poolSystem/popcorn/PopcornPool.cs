@@ -10,9 +10,5 @@ public class PopcornPool : BasePool {
     {
         Debug.Log(PoolManager.Instance);
         Kernel.pool = PoolManager.Instance.GetPool("Popcorn") as PopcornPool;
-        Debug.Log(Kernel.pool);
-
     }
-
-
 }
