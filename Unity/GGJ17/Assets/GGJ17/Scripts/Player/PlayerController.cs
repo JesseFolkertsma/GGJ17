@@ -6,16 +6,20 @@ using System;
 namespace Corn.Movement
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class PlayerController : MonoBehaviour, IMovement
+    public class PlayerController : MonoBehaviour, IMovement, ILives
     {
         #region private fields
         private Rigidbody rb;
+        private float speed;
+        private int health;
         #endregion
 
         #region public fields
         public float walkSpeed;
         public float runSpeed;
         #endregion
+
+
 
         #region start
         // Use this for initialization
@@ -48,16 +52,7 @@ namespace Corn.Movement
             if(xRotationInput != 0 || yRotationInput != 0)
             {
                 Rotate(xRotationInput, yRotationInput);
-
             }
-
-            bool runInput = Input.GetAxis("Sprint") == 1 ? true : false;
-
-            if (runInput)
-            {
-                Run();
-            }
-
         }
         #endregion
 
@@ -71,7 +66,7 @@ namespace Corn.Movement
         {
             Vector3 moveDirection = new Vector3(dir_.x, 0, dir_.y);
                             moveDirection = transform.TransformDirection(moveDirection);
-                            rb.velocity = moveDirection * walkSpeed;
+                            rb.velocity = moveDirection * (Run() ? runSpeed : walkSpeed);
         }
 
         public void Rotate (float xRot_ , float yRot_)
@@ -85,6 +80,25 @@ namespace Corn.Movement
         public bool Run ()
         {
             return Input.GetAxis("Sprint") == 1 ? true : false;
+        }
+
+        public int lives {
+            get {
+                return health;
+            }
+
+            set {
+                health = value;
+            }
+        }
+        public void Die ()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Heal (int amount)
+        {
+            lives += 100;
         }
         #endregion
 
