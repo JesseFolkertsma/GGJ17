@@ -10,5 +10,6 @@ public class HealthPickups : Pickup {
     public override void PickUp(PlayerController pc)
     {
         base.PickUp(pc);
+        pc.Heal(healAmount);
     }
 }
