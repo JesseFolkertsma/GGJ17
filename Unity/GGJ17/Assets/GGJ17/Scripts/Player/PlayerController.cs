@@ -55,14 +55,9 @@ namespace Corn.Movement
         // Update is called once per frame
         void Update ()
         {
-<<<<<<< HEAD
             //MovementInput
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
-=======
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
->>>>>>> 1c069c3dcf632659974f837f8765c5713f47a32e
 
 
 
