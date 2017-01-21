@@ -5,14 +5,15 @@ using Corn.Movement;
 using System;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(Rigidbody))]
 public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
 
     public Transform[] kernelsLocation;
     private Kernel[] kernels;
-    //public Transform goal;
     public BaseAI agent;
-    private Rigidbody rb;
+    public GameObject ragdoll;
+    public Transform player;
+   // private Vector3 moveDirection;
+
 
     private int health;
 
@@ -22,12 +23,18 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
         }
         set {
             health = value;
+            Die();
         }
     }
 
     public void Die ()
     {
-        throw new NotImplementedException();
+        if (lives <= 0)
+        {
+            Instantiate(ragdoll, this.transform.position, transform.rotation);
+            this.gameObject.SetActive(false);
+
+        }
     }
 
     public void Heal (int amount)
@@ -42,17 +49,6 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
             if (amount == 0)
                 break;
         }
-
-    }
-
-    public void Melee ()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Move (Vector2 dir_)
-    {
-        throw new NotImplementedException();
     }
 
     public void Rotate (float x, float y)
@@ -60,13 +56,18 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
         throw new NotImplementedException();
     }
 
-    public bool Run ()
+    public void EvaluateAction ()
     {
-        throw new NotImplementedException();
+
+    }
+
+    public void Attack ()
+    {
+
     }
 
     // Use this for initialization
-    void Start ()
+    void Awake ()
     {
         kernels = new Kernel[kernelsLocation.Length];
         for (int i = 0; i < kernelsLocation.Length; i++)
@@ -76,36 +77,35 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
             kernels[i].ParentLife = this;
             sock.Heal(0);
         }
+
         lives = kernelsLocation.Length;
 
-        transform.position = agent.gameObject.transform.position;
+        agent = GetComponent<BaseAI>();
 
-        rb = this.GetComponent<Rigidbody>();
-        //agent = GetComponent<NavMeshAgent>();
-        //agent.destination = goal.position;
     }
-
-    void FixedUpdate ()
+    void start ()
     {
+        GoTo(player);
 
-        Vector3 moveDirection = (transform.position - agent.gameObject.transform.position).normalized;
-
-        moveDirection = transform.TransformDirection(moveDirection);
-        rb.velocity = moveDirection * 5;
-        //GoTo(goal);
     }
+
+    public void Move (Vector2 dir_)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Melee ()
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool Run ()
+    {
+        throw new NotImplementedException();
+    }
+
     public void GoTo (Transform trans_)
     {
-
-    }
-
-    public void EvaluateAction ()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Attack ()
-    {
-        throw new NotImplementedException();
+        agent.agent.destination = trans_.position;
     }
 }

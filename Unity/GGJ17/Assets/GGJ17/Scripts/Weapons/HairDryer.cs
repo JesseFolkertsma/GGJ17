@@ -8,13 +8,14 @@ public class HairDryer : MonoBehaviour, IWeapon {
 
     public int ammo;
     public int maxAmmo;
-    public float range = 200;
+    public float range = 200f;
+    public float lifeTime = 20f;
+    public float fireRate = 5f;
     public BulletPool pool;
 
     [SerializeField]
     Transform shootPoint;
-    [SerializeField]
-    GameObject hairDryerProp;
+    float cd;
 
     void Start()
     {
@@ -53,26 +54,15 @@ public class HairDryer : MonoBehaviour, IWeapon {
 
     public void Shoot(Vector3 target)
     {
-        Debug.DrawLine(shootPoint.position, target, Color.red, 10);
-        Debug.Log("Shooting towards: " + target);
-        Vector3 dir = (target - shootPoint.position).normalized;
-        BulletObject wave = pool.GetPooledObject() as BulletObject;
-        wave.ShootBullet(shootPoint.position, Quaternion.LookRotation(dir));
-    }
-
-    public GameObject GetProp()
-    {
-        if(hairDryerProp != null)
+        if (cd < Time.time)
         {
-            return hairDryerProp;
-        }
-        else
-        {
-            Debug.LogWarning("Hairdryer has no prop assigned!");
-            return null;
+            cd = Time.time + 1 / fireRate;
+            Vector3 dir = (target - shootPoint.position).normalized;
+            BulletObject wave = pool.GetPooledObject() as BulletObject;
+            wave.ShootBullet(shootPoint.position, Quaternion.LookRotation(dir), lifeTime);
         }
     }
-
+    
     public void SetLocation(Transform parent)
     {
         transform.parent = parent;

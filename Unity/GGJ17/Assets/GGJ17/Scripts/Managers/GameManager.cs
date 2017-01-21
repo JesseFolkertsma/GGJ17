@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour {
 
     public static GameManager instance;
-    public GameObject pauzecanvas;
     public bool inArena = false;
     bool gamePauzed = false;
 
@@ -28,11 +27,6 @@ public class GameManager : MonoBehaviour {
         }
         if (inArena)
         {
-            if (pauzecanvas == null)
-            {
-                pauzecanvas = FindObjectOfType<PauzeMenu>().gameObject;
-                pauzecanvas.SetActive(false);
-            }
             LockCursor(true);
         }
     }
@@ -55,11 +49,6 @@ public class GameManager : MonoBehaviour {
     {
         if (inArena)
         {
-            if (pauzecanvas == null)
-            {
-                pauzecanvas = FindObjectOfType<PauzeMenu>().gameObject;
-                pauzecanvas.SetActive(false);
-            }
             LockCursor(true);
         }
     }
@@ -87,7 +76,7 @@ public class GameManager : MonoBehaviour {
         Debug.Log("Game pauzed");
         gamePauzed = true;
         Time.timeScale = 0;
-        pauzecanvas.SetActive(true);
+        PauzeMenu.instance.gameObject.SetActive(true);
         LockCursor(false);
     }
 
@@ -96,11 +85,11 @@ public class GameManager : MonoBehaviour {
         Debug.Log("Continueing game");
         gamePauzed = false;
         Time.timeScale = 1;
-        pauzecanvas.SetActive(false);
+        PauzeMenu.instance.gameObject.SetActive(false);
         LockCursor(true);
     }
 
-    public void StartGame(int buildI = 1)
+    public void StartGame(int buildI = 0)
     {
         Debug.Log("Starting Arena " + buildI);
         inArena = true;

@@ -6,7 +6,6 @@ using CommonAssets.Pool;
 
 public class Kernel : MonoBehaviour, ILives
 {
-
     public ILives ParentLife;
 
     public bool available;
@@ -31,7 +30,7 @@ public class Kernel : MonoBehaviour, ILives
 
     public void Die ()
     {
-
+        ParentLife.lives--;
         available = false;
         PopcornObject corn = pool.GetPooledObject() as PopcornObject;
         corn.pop(this.transform);

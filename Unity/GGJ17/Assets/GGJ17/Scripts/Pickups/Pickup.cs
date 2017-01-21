@@ -5,9 +5,13 @@ using Corn.Movement;
 
 public class Pickup : MonoBehaviour {
 
+    public PickupSpawner attachedSpawner;
+
     public virtual void PickUp(PlayerController pc)
     {
         Destroy(gameObject);
+        if(attachedSpawner != null)
+            attachedSpawner.PickedUpPickup();
     }
 
     void OnTriggerEnter(Collider col)

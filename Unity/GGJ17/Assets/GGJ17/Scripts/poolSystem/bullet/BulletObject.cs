@@ -8,11 +8,12 @@ public class BulletObject : BasePoolObject {
     public float speed = 2;
     public float timer;
 
-    public void ShootBullet(Vector3 pos, Quaternion rot)
+    public void ShootBullet(Vector3 pos, Quaternion rot, float lifeTime)
     {
         SetEnable();
         transform.position = pos;
         transform.rotation = rot;
+        Invoke("SetDisable", lifeTime);
     }
 
     void Update()
@@ -22,6 +23,9 @@ public class BulletObject : BasePoolObject {
 
     void OnTriggerEnter(Collider col)
     {
-        col.GetComponent<Kernel>().lives = 0;
+        if (col.GetComponent<Kernel>())
+            col.GetComponent<Kernel>().lives = 0;
+        else
+            Destroy(gameObject);
     }
 }
