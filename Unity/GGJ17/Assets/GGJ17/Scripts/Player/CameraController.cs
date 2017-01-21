@@ -66,5 +66,6 @@ public class CameraController : MonoBehaviour {
     public void Rotate(Vector3 xrot_)
     {
         camRotation.Rotate(xrot_);
+        Mathf.Clamp(transform.rotation.x, 90, -90);
     }
 }
