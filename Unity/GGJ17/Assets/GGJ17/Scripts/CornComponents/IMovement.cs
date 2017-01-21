@@ -10,8 +10,8 @@ namespace Corn.Movement
 
         void Rotate (float x, float y);
 
-        void Run (bool run_);
-
         void Melee ();
+
+        bool Run();
     }
 }

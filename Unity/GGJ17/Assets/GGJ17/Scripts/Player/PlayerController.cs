@@ -13,7 +13,8 @@ namespace Corn.Movement
         #endregion
 
         #region public fields
-        public float movementSpeed;
+        public float walkSpeed;
+        public float runSpeed;
         #endregion
 
         #region start
@@ -29,7 +30,7 @@ namespace Corn.Movement
         #region Update
 
         // Update is called once per frame
-        void Update ()
+        void FixedUpdate ()
         {
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
@@ -41,12 +42,21 @@ namespace Corn.Movement
                 Move(direction);
             }
 
+            float yRotationInput = Input.GetAxis("Mouse Y");
+            float xRotationInput = Input.GetAxis("Mouse X");
 
-            float xRotationInput = Input.GetAxis("MouseX");
-            float yRotationInput = Input.GetAxis("MouseY");
+            if(xRotationInput != 0 || yRotationInput != 0)
+            {
+                Rotate(xRotationInput, yRotationInput);
 
+            }
 
-            Rotate(xRotationInput, yRotationInput);
+            bool runInput = Input.GetAxis("Sprint") == 1 ? true : false;
+
+            if (runInput)
+            {
+                Run();
+            }
 
         }
         #endregion
@@ -61,19 +71,20 @@ namespace Corn.Movement
         {
             Vector3 moveDirection = new Vector3(dir_.x, 0, dir_.y);
                             moveDirection = transform.TransformDirection(moveDirection);
-                            rb.velocity = moveDirection * movementSpeed;
+                            rb.velocity = moveDirection * walkSpeed;
         }
 
         public void Rotate (float xRot_ , float yRot_)
         {
-            Debug.Log(xRot_);
-            Debug.Log(yRot_);
-
+            //Debug.Log(yRot_);
+            Vector3 wantedRot = new Vector3(0, rb.rotation.y + yRot_, 0);
+            rb.MoveRotation(rb.rotation * Quaternion.Euler(wantedRot));
+            
         }
 
-        public void Run (bool run_)
+        public bool Run ()
         {
-
+            return Input.GetAxis("Sprint") == 1 ? true : false;
         }
         #endregion
 
