@@ -14,6 +14,11 @@ public class Microwave : MonoBehaviour, IWeapon {
         throw new NotImplementedException();
     }
 
+    public void SetLocation(Transform parent)
+    {
+        throw new NotImplementedException();
+    }
+
     public void Shoot(Vector3 target)
     {
         throw new NotImplementedException();

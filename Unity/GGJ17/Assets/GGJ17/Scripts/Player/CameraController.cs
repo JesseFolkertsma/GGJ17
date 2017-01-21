@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Corn.Movement;
 
 public class CameraController : MonoBehaviour {
 
@@ -13,26 +14,49 @@ public class CameraController : MonoBehaviour {
     [SerializeField]
     Transform camPosition;
 
-    void Update()
+    void Awake()
     {
-        Vector3 _offset = Vector3.zero;
-        if (!isZoomed)
+        PlayerController p = FindObjectOfType<PlayerController>();
+        p.cam = this;
+        camPosition = p.transform.FindChild("CameraPosition");
+    }
+
+    public Vector3 GetTarget()
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position, transform.forward, out hit, 200f))
         {
-            _offset = offset;
+            return hit.point;
         }
         else
         {
-            _offset = zoomOffset;
+            return transform.position + transform.forward * 200f;
         }
-        camPosition.localPosition = _offset;
+    }
 
-        transform.position = Vector3.Lerp(transform.position, camPosition.position, Time.deltaTime * followSpeed);
-        //transform.position = camPosition.position;
-        transform.rotation = camPosition.rotation;
-
-        if (Input.GetButtonDown("Right Mouse"))
+    void Update()
+    {
+        if (camPosition != null)
         {
-            isZoomed = !isZoomed;
+            Vector3 _offset = Vector3.zero;
+            if (!isZoomed)
+            {
+                _offset = offset;
+            }
+            else
+            {
+                _offset = zoomOffset;
+            }
+            camPosition.localPosition = _offset;
+
+            transform.position = Vector3.Lerp(transform.position, camPosition.position, Time.deltaTime * followSpeed);
+            //transform.position = camPosition.position;
+            transform.rotation = camPosition.rotation;
+
+            if (Input.GetButtonDown("Right Mouse"))
+            {
+                isZoomed = !isZoomed;
+            }
         }
     }
 }

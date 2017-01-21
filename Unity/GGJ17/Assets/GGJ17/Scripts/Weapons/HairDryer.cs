@@ -21,7 +21,7 @@ public class HairDryer : MonoBehaviour, IWeapon {
     void Start()
     {
         pool = PoolManager.Instance.GetPool("BulletPool") as BulletPool;
-        TestShoot();
+        //TestShoot();
     }
 
     void TestShoot()
@@ -73,5 +73,12 @@ public class HairDryer : MonoBehaviour, IWeapon {
             Debug.LogWarning("Hairdryer has no prop assigned!");
             return null;
         }
+    }
+
+    public void SetLocation(Transform parent)
+    {
+        transform.parent = parent;
+        transform.localPosition = Vector3.zero;
+        transform.rotation = Quaternion.identity;
     }
 }
