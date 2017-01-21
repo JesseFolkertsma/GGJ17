@@ -23,7 +23,7 @@ public class BulletObject : BasePoolObject {
     {
         if (col.tag == "Kernel")
         {
-            col.GetComponent<Kernel>().PopKernel();
+            //col.GetComponent<Kernel>().PopKernel();
         }
     }
 }
