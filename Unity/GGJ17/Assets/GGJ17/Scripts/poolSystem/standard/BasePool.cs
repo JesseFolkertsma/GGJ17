@@ -32,6 +32,7 @@ namespace CommonAssets.Pool
                 return null;
             }
         }
+
         public virtual BasePoolObject AddPoolObject () {
             GameObject goObj = GameObject.Instantiate(PoolObject);
             BasePoolObject poolObj = goObj.GetComponent<BasePoolObject>();

@@ -10,9 +10,12 @@ namespace Corn.Movement
     {
         #region private fields
         private Rigidbody rb;
+        private Animator anim;
         private int health;
         float xRotationInput;
         float yRotationInput;
+        float vertical;
+        float horizontal;
         IWeapon currenWeapon;
         [SerializeField]
         Transform rightHand;
@@ -42,6 +45,7 @@ namespace Corn.Movement
         void Start ()
         {
             rb = this.GetComponent<Rigidbody>();
+            anim = this.GetComponent<Animator>();
             PlaceKernals();
         }
         #endregion
@@ -51,15 +55,11 @@ namespace Corn.Movement
         // Update is called once per frame
         void Update ()
         {
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
+            //MovementInput
+            horizontal = Input.GetAxis("Horizontal");
+            vertical = Input.GetAxis("Vertical");
 
-            Vector2 direction = new Vector2(horizontal, vertical);
 
-            if (direction != Vector2.zero)
-            {
-                Move(direction);
-            }
 
             yRotationInput = Input.GetAxis("Mouse Y")  * rotationSpeed;
             xRotationInput = Input.GetAxis("Mouse X")  * rotationSpeed;
@@ -73,6 +73,9 @@ namespace Corn.Movement
                     currenWeapon.Shoot(cam.GetTarget());
                 }
             }
+
+            //Anim
+            SetupAnim(vertical);
         }
         void FixedUpdate ()
         {
@@ -80,10 +83,21 @@ namespace Corn.Movement
             {
                 Rotate(xRotationInput * Time.fixedDeltaTime, yRotationInput * Time.fixedDeltaTime);
             }
+            Vector2 direction = new Vector2(horizontal, vertical);
+
+            if (direction != Vector2.zero)
+            {
+                Move(direction);
+            }
         }
         #endregion
 
         #region public methods
+        void SetupAnim(float mov)
+        {
+            anim.SetFloat("Movement", mov);
+        }
+
         public void Melee ()
         {
 
@@ -92,16 +106,17 @@ namespace Corn.Movement
         public void Move (Vector2 dir_)
         {
             Vector3 moveDirection = new Vector3(dir_.x, 0, dir_.y);
-                            moveDirection = transform.TransformDirection(moveDirection);
-                            rb.velocity = moveDirection * (Run() ? runSpeed : walkSpeed);
+            moveDirection = transform.TransformDirection(moveDirection);
+            rb.velocity = moveDirection * (Run() ? runSpeed : walkSpeed);
         }
 
         public void Rotate (float xRot_ , float yRot_)
         {
             //Debug.Log(yRot_);
-            Vector3 wantedRot = new Vector3(0, yRot_, 0);
-            rb.MoveRotation(rb.rotation * Quaternion.Euler(wantedRot));
-            
+            Vector3 wantedYRot = new Vector3(0, yRot_, 0);
+            rb.MoveRotation(rb.rotation * Quaternion.Euler(wantedYRot));
+            Vector3 wantedXRot = new Vector3(xRot_, 0, 0);
+            cam.Rotate(-wantedXRot * Time.deltaTime * rotationSpeed);
         }
 
         public bool Run ()
@@ -135,6 +150,7 @@ namespace Corn.Movement
             print(currenWeapon);
         }
         #endregion
+
         #region private methods
         private void PlaceKernals ()
         {

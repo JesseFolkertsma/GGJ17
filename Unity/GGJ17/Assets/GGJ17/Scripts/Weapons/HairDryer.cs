@@ -14,8 +14,6 @@ public class HairDryer : MonoBehaviour, IWeapon {
     [SerializeField]
     Transform shootPoint;
     [SerializeField]
-    GameObject radiationWave;
-    [SerializeField]
     GameObject hairDryerProp;
 
     void Start()
