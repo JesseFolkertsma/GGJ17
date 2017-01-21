@@ -82,7 +82,11 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
 
         agent = GetComponent<BaseAI>();
 
+    }
+    void start ()
+    {
         GoTo(player);
+
     }
 
     public void Move (Vector2 dir_)
