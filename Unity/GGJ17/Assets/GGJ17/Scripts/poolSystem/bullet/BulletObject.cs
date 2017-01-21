@@ -21,9 +21,6 @@ public class BulletObject : BasePoolObject {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Kernel")
-        {
-            //col.GetComponent<Kernel>().PopKernel();
-        }
+        col.GetComponent<Kernel>().lives = 0;     
     }
 }

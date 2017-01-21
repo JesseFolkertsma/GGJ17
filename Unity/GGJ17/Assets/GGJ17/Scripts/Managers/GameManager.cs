@@ -33,6 +33,21 @@ public class GameManager : MonoBehaviour {
                 pauzecanvas = FindObjectOfType<PauzeMenu>().gameObject;
                 pauzecanvas.SetActive(false);
             }
+            LockCursor(true);
+        }
+    }
+
+    public void LockCursor(bool state)
+    {
+        if (state)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
     }
 
@@ -45,6 +60,7 @@ public class GameManager : MonoBehaviour {
                 pauzecanvas = FindObjectOfType<PauzeMenu>().gameObject;
                 pauzecanvas.SetActive(false);
             }
+            LockCursor(true);
         }
     }
 
@@ -72,6 +88,7 @@ public class GameManager : MonoBehaviour {
         gamePauzed = true;
         Time.timeScale = 0;
         pauzecanvas.SetActive(true);
+        LockCursor(false);
     }
 
     public void ContinueGame()
@@ -80,6 +97,7 @@ public class GameManager : MonoBehaviour {
         gamePauzed = false;
         Time.timeScale = 1;
         pauzecanvas.SetActive(false);
+        LockCursor(true);
     }
 
     public void StartGame(int buildI = 1)

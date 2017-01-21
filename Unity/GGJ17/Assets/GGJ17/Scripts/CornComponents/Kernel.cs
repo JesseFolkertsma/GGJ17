@@ -30,6 +30,7 @@ public class Kernel : MonoBehaviour, ILives
     {
         if (lives <= 0)
         {
+            Debug.Log(lives);
             available = false;
             PopcornObject corn = pool.GetPooledObject() as PopcornObject;
         }

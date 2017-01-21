@@ -31,7 +31,7 @@ namespace Corn.Movement
         void Start ()
         {
             rb = this.GetComponent<Rigidbody>();
-
+            PlaceKernals();
 
         }
         #endregion
@@ -117,10 +117,8 @@ namespace Corn.Movement
         {
             for (int i = 0; i < kernalsLocation.Length; i++)
             {
-                Debug.Log(kernalsLocation[i]);
                 Kernel sock = kernalsLocation[i].gameObject.AddComponent<Kernel>();
                 sock.Heal(0);
-                sock.lives = 0;
             }
         }
         #endregion

@@ -24,10 +24,15 @@ public class CameraController : MonoBehaviour {
         {
             _offset = zoomOffset;
         }
-        camPosition.localPosition = offset;
+        camPosition.localPosition = _offset;
 
-        //transform.position = Vector3.Lerp(transform.position, camPosition.position, Time.deltaTime * followSpeed);
-        transform.position = camPosition.position;
+        transform.position = Vector3.Lerp(transform.position, camPosition.position, Time.deltaTime * followSpeed);
+        //transform.position = camPosition.position;
         transform.rotation = camPosition.rotation;
+
+        if (Input.GetButtonDown("Right Mouse"))
+        {
+            isZoomed = !isZoomed;
+        }
     }
 }
