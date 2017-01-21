@@ -43,6 +43,5 @@ public class Kernel : MonoBehaviour, ILives
         available = true;
         lives = 3;
         this.gameObject.SetActive(true);
-
     }
 }
