@@ -1,16 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Corn.Movement;
 using UnityEngine;
 
-public class HealthPickups : MonoBehaviour {
+public class HealthPickups : Pickup {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public int healAmount;
+
+    public override void PickUp(PlayerController pc)
+    {
+        base.PickUp(pc);
+    }
 }
