@@ -6,6 +6,7 @@ using CommonAssets.Pool;
 public class BulletObject : BasePoolObject {
 
     public float speed = 2;
+    public float timer;
 
     public void ShootBullet(Vector3 pos, Quaternion rot)
     {
@@ -21,15 +22,6 @@ public class BulletObject : BasePoolObject {
 
     void OnTriggerEnter(Collider col)
     {
-        try
-        {
-            col.GetComponent<Kernel>().lives = 0;
-
-        }
-        catch (System.Exception)
-        {
-            Debug.LogError(col.gameObject.name);
-            
-        }
+        col.GetComponent<Kernel>().lives = 0;
     }
 }
