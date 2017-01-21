@@ -10,13 +10,16 @@ namespace Corn.Movement
     {
         #region private fields
         private Rigidbody rb;
-        private float speed;
         private int health;
         #endregion
 
         #region public fields
         public float walkSpeed;
         public float runSpeed;
+        public float rotationSpeed;
+
+        public Transform[] kernalsLocation;
+
         #endregion
 
 
@@ -46,8 +49,8 @@ namespace Corn.Movement
                 Move(direction);
             }
 
-            float yRotationInput = Input.GetAxis("Mouse Y");
-            float xRotationInput = Input.GetAxis("Mouse X");
+            float yRotationInput = Input.GetAxisRaw("Mouse Y") * Time.fixedDeltaTime * rotationSpeed;
+            float xRotationInput = Input.GetAxisRaw("Mouse X") * Time.fixedDeltaTime * rotationSpeed;
 
             if(xRotationInput != 0 || yRotationInput != 0)
             {
@@ -105,6 +108,17 @@ namespace Corn.Movement
 
         }
         #endregion
-
+        #region private methods
+        private void PlaceKernals ()
+        {
+            for (int i = 0; i < kernalsLocation.Length; i++)
+            {
+                Debug.Log(kernalsLocation[i]);
+                KernalSocket sock = kernalsLocation[i].gameObject.AddComponent<KernalSocket>();
+                sock.available = false;
+                sock.location = kernalsLocation[i];
+            }
+        }
+        #endregion
     }
 }
