@@ -24,11 +24,6 @@ namespace Corn.Movement
         GameObject weaponInRightHand;
         #endregion
 
-        #region Weapons
-        public GameObject hairDryer;
-        public GameObject microWave;
-        #endregion
-
         #region public fields
         public float walkSpeed;
         public float runSpeed;
@@ -58,12 +53,9 @@ namespace Corn.Movement
         // Update is called once per frame
         void Update ()
         {
-
             //MovementInput
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
-
-
 
             yRotationInput = Input.GetAxis("Mouse Y")  * rotationSpeed;
             xRotationInput = Input.GetAxis("Mouse X")  * rotationSpeed;
@@ -71,9 +63,8 @@ namespace Corn.Movement
             //Weapon
             if(currenWeapon != null)
             {
-                if (Input.GetButtonDown("Left Mouse"))
+                if (Input.GetButton("Left Mouse"))
                 {
-                    print("Shoot!");
                     currenWeapon.Shoot(cam.GetTarget());
                 }
             }
@@ -162,6 +153,10 @@ namespace Corn.Movement
         }
         public void SetWeapon (GameObject weapon_)
         {
+            if(weaponInRightHand != null)
+            {
+                Destroy(weaponInRightHand);
+            }
             weaponInRightHand = Instantiate(weapon_);
             currenWeapon = weaponInRightHand.GetComponent<IWeapon>();
             currenWeapon.SetLocation(rightHand);

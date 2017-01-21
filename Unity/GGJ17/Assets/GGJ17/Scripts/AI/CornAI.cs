@@ -23,6 +23,7 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
         }
         set {
             health = value;
+            Die();
         }
     }
 
@@ -30,7 +31,7 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
     {
         if (lives <= 0)
         {
-            Instantiate(ragdoll, this.transform.position, Quaternion.identity);
+            Instantiate(ragdoll, this.transform.position, transform.rotation);
             this.gameObject.SetActive(false);
 
         }

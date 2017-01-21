@@ -10,10 +10,12 @@ public class Microwave : MonoBehaviour, IWeapon {
     public int maxAmmo;
     public float range = 200f;
     public float lifeTime = 20f;
+    public float fireRate = .3f;
     public BulletPool pool;
 
     [SerializeField]
     Transform shootPoint;
+    float cd = 0;
 
     void Start()
     {
@@ -52,15 +54,19 @@ public class Microwave : MonoBehaviour, IWeapon {
 
     public void Shoot(Vector3 target)
     {
-        Vector3 dir = (target - shootPoint.position).normalized;
-        BulletObject wave = pool.GetPooledObject() as BulletObject;
-        wave.ShootBullet(shootPoint.position, Quaternion.LookRotation(dir), lifeTime);
+        if (cd < Time.time)
+        {
+            cd = Time.time + 1 / fireRate;
+            Vector3 dir = (target - shootPoint.position).normalized;
+            BulletObject wave = pool.GetPooledObject() as BulletObject;
+            wave.ShootBullet(shootPoint.position, Quaternion.LookRotation(dir), lifeTime);
+        }
     }
 
     public void SetLocation(Transform parent)
     {
         transform.parent = parent;
         transform.localPosition = Vector3.zero;
-        transform.rotation = Quaternion.identity;
+        transform.localRotation = Quaternion.identity;
     }
 }
