@@ -13,12 +13,23 @@ namespace Corn.Movement
         private int health;
         float xRotationInput;
         float yRotationInput;
+        IWeapon currenWeapon;
+        [SerializeField]
+        Transform rightHand;
+        GameObject weaponInRightHand;
+        #endregion
+
+        #region Weapons
+        public GameObject hairDryer;
+        public GameObject microWave;
         #endregion
 
         #region public fields
         public float walkSpeed;
         public float runSpeed;
         public float rotationSpeed;
+
+        public CameraController cam;
 
         public Transform[] kernalsLocation;
 
@@ -32,7 +43,6 @@ namespace Corn.Movement
         {
             rb = this.GetComponent<Rigidbody>();
             PlaceKernals();
-
         }
         #endregion
 
@@ -53,6 +63,16 @@ namespace Corn.Movement
 
             yRotationInput = Input.GetAxis("Mouse Y")  * rotationSpeed;
             xRotationInput = Input.GetAxis("Mouse X")  * rotationSpeed;
+
+            //Weapon
+            if(currenWeapon != null)
+            {
+                if (Input.GetButtonDown("Left Mouse"))
+                {
+                    print("Shoot!");
+                    currenWeapon.Shoot(cam.GetTarget());
+                }
+            }
         }
         void FixedUpdate ()
         {
@@ -107,9 +127,12 @@ namespace Corn.Movement
         {
             lives += 100;
         }
-        public void SetWeapon (IWeapon weapon_)
+        public void SetWeapon (GameObject weapon_)
         {
-
+            weaponInRightHand = Instantiate(weapon_);
+            currenWeapon = weaponInRightHand.GetComponent<IWeapon>();
+            currenWeapon.SetLocation(rightHand);
+            print(currenWeapon);
         }
         #endregion
         #region private methods

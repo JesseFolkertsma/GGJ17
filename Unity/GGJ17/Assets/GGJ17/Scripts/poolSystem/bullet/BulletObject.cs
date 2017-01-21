@@ -29,7 +29,6 @@ public class BulletObject : BasePoolObject {
         catch (System.Exception)
         {
             Debug.LogError(col.gameObject.name);
-            
         }
     }
 }
