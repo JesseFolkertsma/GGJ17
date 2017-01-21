@@ -26,6 +26,14 @@ public class GameManager : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+        if (inArena)
+        {
+            if (pauzecanvas == null)
+            {
+                pauzecanvas = FindObjectOfType<PauzeMenu>().gameObject;
+                pauzecanvas.SetActive(false);
+            }
+        }
     }
 
     void OnLevelWasLoaded()
