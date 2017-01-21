@@ -15,6 +15,8 @@ public class HairDryer : MonoBehaviour, IWeapon {
     Transform shootPoint;
     [SerializeField]
     GameObject radiationWave;
+    [SerializeField]
+    GameObject hairDryerProp;
 
     void Start()
     {
@@ -53,5 +55,18 @@ public class HairDryer : MonoBehaviour, IWeapon {
         Vector3 dir = (target - shootPoint.position).normalized;
         BulletObject wave = pool.GetPooledObject() as BulletObject;
         wave.ShootBullet(shootPoint.position, Quaternion.LookRotation(dir));
+    }
+
+    public GameObject GetProp()
+    {
+        if(hairDryerProp != null)
+        {
+            return hairDryerProp;
+        }
+        else
+        {
+            Debug.LogWarning("Hairdryer has no prop assigned!");
+            return null;
+        }
     }
 }

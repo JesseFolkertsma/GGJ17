@@ -6,16 +6,25 @@ using System;
 namespace Corn.Movement
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class PlayerController : MonoBehaviour, IMovement
+    public class PlayerController : MonoBehaviour, IMovement, ILives
     {
         #region private fields
         private Rigidbody rb;
+        private int health;
+        float xRotationInput;
+        float yRotationInput;
         #endregion
 
         #region public fields
         public float walkSpeed;
         public float runSpeed;
+        public float rotationSpeed;
+
+        public Transform[] kernalsLocation;
+
         #endregion
+
+
 
         #region start
         // Use this for initialization
@@ -30,7 +39,7 @@ namespace Corn.Movement
         #region Update
 
         // Update is called once per frame
-        void FixedUpdate ()
+        void Update ()
         {
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
@@ -42,22 +51,15 @@ namespace Corn.Movement
                 Move(direction);
             }
 
-            float yRotationInput = Input.GetAxis("Mouse Y");
-            float xRotationInput = Input.GetAxis("Mouse X");
-
-            if(xRotationInput != 0 || yRotationInput != 0)
+            yRotationInput = Input.GetAxis("Mouse Y")  * rotationSpeed;
+            xRotationInput = Input.GetAxis("Mouse X")  * rotationSpeed;
+        }
+        void FixedUpdate ()
+        {
+            if (xRotationInput != 0 || yRotationInput != 0)
             {
-                Rotate(xRotationInput, yRotationInput);
-
+                Rotate(xRotationInput * Time.fixedDeltaTime, yRotationInput * Time.fixedDeltaTime);
             }
-
-            bool runInput = Input.GetAxis("Sprint") == 1 ? true : false;
-
-            if (runInput)
-            {
-                Run();
-            }
-
         }
         #endregion
 
@@ -71,13 +73,13 @@ namespace Corn.Movement
         {
             Vector3 moveDirection = new Vector3(dir_.x, 0, dir_.y);
                             moveDirection = transform.TransformDirection(moveDirection);
-                            rb.velocity = moveDirection * walkSpeed;
+                            rb.velocity = moveDirection * (Run() ? runSpeed : walkSpeed);
         }
 
         public void Rotate (float xRot_ , float yRot_)
         {
             //Debug.Log(yRot_);
-            Vector3 wantedRot = new Vector3(0, rb.rotation.y + yRot_, 0);
+            Vector3 wantedRot = new Vector3(0, yRot_, 0);
             rb.MoveRotation(rb.rotation * Quaternion.Euler(wantedRot));
             
         }
@@ -86,7 +88,41 @@ namespace Corn.Movement
         {
             return Input.GetAxis("Sprint") == 1 ? true : false;
         }
-        #endregion
 
+        public int lives {
+            get {
+                return health;
+            }
+
+            set {
+                health = value;
+            }
+        }
+        public void Die ()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Heal (int amount)
+        {
+            lives += 100;
+        }
+        public void SetWeapon (IWeapon weapon_)
+        {
+
+        }
+        #endregion
+        #region private methods
+        private void PlaceKernals ()
+        {
+            for (int i = 0; i < kernalsLocation.Length; i++)
+            {
+                Debug.Log(kernalsLocation[i]);
+                KernalSocket sock = kernalsLocation[i].gameObject.AddComponent<KernalSocket>();
+                sock.available = false;
+                sock.location = kernalsLocation[i];
+            }
+        }
+        #endregion
     }
 }
