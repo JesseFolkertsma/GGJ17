@@ -100,6 +100,10 @@ namespace Corn.Movement
         {
             lives += 100;
         }
+        public void SetWeapon (IWeapon weapon_)
+        {
+
+        }
         #endregion
 
     }
