@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 3c261f631140aeb43930c79b5301cec5
-timeCreated: 1484991454
+guid: daa971973e53204448828e0cd8f0cd6c
+timeCreated: 1484993105
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -11,7 +11,7 @@ ModelImporter:
     3300000: //RootNode
     4300000: BladBlazer
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:
