@@ -9,7 +9,7 @@ public class Kernel : MonoBehaviour, ILives
 
     public ILives ParentLife;
 
-    private bool available;
+    public bool available;
 
     private int lives_ = 3;
 
@@ -22,20 +22,22 @@ public class Kernel : MonoBehaviour, ILives
 
         set {
             lives_ = value;
-            Die();
+            if(lives_ <= 0)
+            {
+                Die();
+            }
         }
     }
 
     public void Die ()
     {
-        if (lives <= 0)
-        {
-            available = false;
-            PopcornObject corn = pool.GetPooledObject() as PopcornObject;
-            corn.pop(this.transform);
-            corn.SetEnable();
-            this.gameObject.SetActive(false);
-        }
+
+        available = false;
+        PopcornObject corn = pool.GetPooledObject() as PopcornObject;
+        corn.pop(this.transform);
+        corn.SetEnable();
+        this.gameObject.SetActive(false);
+
     }
 
     public void Heal (int amount)
