@@ -86,6 +86,11 @@ namespace Corn.Movement
         {
             return Input.GetAxis("Sprint") == 1 ? true : false;
         }
+
+        public void SetWeapon(IWeapon weapon)
+        {
+
+        }
         #endregion
 
     }
