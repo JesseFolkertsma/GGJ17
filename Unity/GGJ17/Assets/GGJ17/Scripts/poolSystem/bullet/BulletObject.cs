@@ -5,13 +5,25 @@ using CommonAssets.Pool;
 
 public class BulletObject : BasePoolObject {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public float speed = 2;
+
+    public void ShootBullet(Vector3 pos, Quaternion rot)
+    {
+        SetEnable();
+        transform.position = pos;
+        transform.rotation = rot;
+    }
+
+    void Update()
+    {
+        transform.Translate(Vector3.forward * Time.deltaTime * speed);
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.tag == "Kernel")
+        {
+            col.GetComponent<Kernel>().PopKernel();
+        }
+    }
 }

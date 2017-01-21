@@ -30,12 +30,4 @@ public class BulletPool : BasePool  {
         }
 
     }
-
-    public BulletObject getBullet ()
-    {
-        BulletObject bullet = GetPooledObject() as BulletObject;
-        bullet.SetEnable();
-
-        return bullet;
-    }
 }
