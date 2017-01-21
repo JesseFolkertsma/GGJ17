@@ -5,16 +5,14 @@ using Corn.Movement;
 using System;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(Rigidbody))]
 public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
 
     public Transform[] kernelsLocation;
     private Kernel[] kernels;
-    public GameObject agentPrefab;
-    //public BaseAI agent;
-    private Rigidbody rb;
+    public BaseAI agent;
+    public GameObject ragdoll;
     public Transform player;
-    private Vector3 moveDirection;
+   // private Vector3 moveDirection;
 
 
     private int health;
@@ -30,7 +28,12 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
 
     public void Die ()
     {
-        throw new NotImplementedException();
+        if (lives <= 0)
+        {
+            Instantiate(ragdoll, this.transform.position, Quaternion.identity);
+            this.gameObject.SetActive(false);
+
+        }
     }
 
     public void Heal (int amount)
@@ -47,43 +50,9 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
         }
     }
 
-    public void Melee ()
-    {
-
-    }
-
-    public void Move (Vector2 dir_)
-    {
-        //moveDirection = (agent.transform.position - transform.position).normalized;
-        //moveDirection = new Vector3(moveDirection.x, 0, moveDirection.z);
-        //rb.velocity = moveDirection * 5;
-
-    }
-
     public void Rotate (float x, float y)
     {
-
-        //var localTarget = transform.InverseTransformPoint(agent.transform.position);
-        //float angle = Mathf.Atan2(localTarget.x, localTarget.z) * Mathf.Rad2Deg;
-
-        //transform.eulerAngles = new Vector3(0, angle, 0);
-
-        //this.transform.rotation = agent.transform.rotation;
-
-        //float newAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
-        //Debug.Log(newAngle);
-        //Vector3 wantedYRot = new Vector3(0, 2, 0);
-        //rb.MoveRotation(Quaternion.Euler(wantedYRot));
-    }
-
-    public bool Run ()
-    {
         throw new NotImplementedException();
-    }
-
-    public void GoTo (Transform trans_)
-    {
-
     }
 
     public void EvaluateAction ()
@@ -107,25 +76,31 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
             kernels[i].ParentLife = this;
             sock.Heal(0);
         }
+
         lives = kernelsLocation.Length;
 
-        rb = this.GetComponent<Rigidbody>();
+        agent = GetComponent<BaseAI>();
 
-        //agent = GameObject.Instantiate(agentPrefab, transform.position, Quaternion.identity).GetComponent<BaseAI>();
-        //agent.goal = player.transform;
-
-        //agent = GetComponent<NavMeshAgent>();
-        //agent.destination = goal.position;
+        GoTo(player);
     }
 
-    void FixedUpdate ()
+    public void Move (Vector2 dir_)
     {
-        //if (agent == null)
-        //    return;
-
-        //Move(Vector2.zero);
-        //Rotate(0, 0);
-        //GoTo(goal);
+        throw new NotImplementedException();
     }
 
+    public void Melee ()
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool Run ()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void GoTo (Transform trans_)
+    {
+        agent.agent.destination = trans_.position;
+    }
 }
