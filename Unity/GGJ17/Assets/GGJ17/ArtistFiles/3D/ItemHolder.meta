@@ -1,4 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Unity/GGJ17/Assets/GGJ17/ArtistFiles/3D/ItemHolder.meta
+guid: 503c94db65bc89a4c90b943c5373506d
+folderAsset: yes
+timeCreated: 1484955346
+=======
 <<<<<<< HEAD
 guid: 2e637ddce727b3945bc2d3e191113022
 folderAsset: yes
@@ -8,6 +13,7 @@ guid: 0489b9edd2c0205408d8ec99a3568968
 folderAsset: yes
 timeCreated: 1484953025
 >>>>>>> a00125e11b1ca6012323b5c7775ff032c26d9faf
+>>>>>>> e3e50e10e4a60320911f44c9643d9b69a34f3702:Unity/GGJ17/Assets/GGJ17/ArtistFiles/3D/Föhn/Materials.meta
 licenseType: Free
 DefaultImporter:
   userData: 

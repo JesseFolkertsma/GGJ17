@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 8d5c51f345e13ee44acec0e9fb57a0ca
-timeCreated: 1484960342
+guid: 73187f90f14f59e4686dc97979c5de93
+timeCreated: 1484954610
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: "F\xF6hn"
+    4300000: ShieldPickUp
   materials:
     importMaterials: 0
     materialName: 0
