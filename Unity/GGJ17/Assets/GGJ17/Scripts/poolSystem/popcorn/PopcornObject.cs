@@ -8,7 +8,7 @@ public class PopcornObject : BasePoolObject {
 
     public void pop (Transform pos)
     {
-
+        this.transform.position = pos.position;
 
     }
 }
