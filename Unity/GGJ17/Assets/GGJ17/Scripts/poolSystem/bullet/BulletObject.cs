@@ -21,6 +21,15 @@ public class BulletObject : BasePoolObject {
 
     void OnTriggerEnter(Collider col)
     {
-        col.GetComponent<Kernel>().lives = 0;     
+        try
+        {
+            col.GetComponent<Kernel>().lives = 0;
+
+        }
+        catch (System.Exception)
+        {
+            Debug.LogError(col.gameObject.name);
+            
+        }
     }
 }
