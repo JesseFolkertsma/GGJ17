@@ -32,6 +32,9 @@ public class Kernel : MonoBehaviour, ILives
         {
             available = false;
             PopcornObject corn = pool.GetPooledObject() as PopcornObject;
+            corn.pop(this.transform);
+            corn.SetEnable();
+            this.gameObject.SetActive(false);
         }
     }
 
@@ -39,5 +42,6 @@ public class Kernel : MonoBehaviour, ILives
     {
         available = true;
         lives = 3;
+        this.gameObject.SetActive(true);
     }
 }

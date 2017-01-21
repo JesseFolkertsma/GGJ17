@@ -6,9 +6,9 @@ using CommonAssets.Pool;
 [RequireComponent(typeof(Rigidbody))]
 public class PopcornObject : BasePoolObject {
 
-    public void pop ()
+    public void pop (Transform pos)
     {
-
+        this.transform.position = pos.position;
 
     }
 }

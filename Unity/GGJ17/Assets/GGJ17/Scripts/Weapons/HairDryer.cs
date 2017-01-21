@@ -21,6 +21,11 @@ public class HairDryer : MonoBehaviour, IWeapon {
     void Start()
     {
         pool = PoolManager.Instance.GetPool("BulletPool") as BulletPool;
+        TestShoot();
+    }
+
+    void TestShoot()
+    {
         StartCoroutine(Shooting());
     }
 
@@ -39,7 +44,7 @@ public class HairDryer : MonoBehaviour, IWeapon {
                 target = Camera.main.transform.position + Camera.main.transform.forward * range;
             }
             Shoot(target);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(3f);
         }
     }
 
