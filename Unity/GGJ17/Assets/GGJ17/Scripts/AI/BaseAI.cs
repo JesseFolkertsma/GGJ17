@@ -7,11 +7,10 @@ public class BaseAI : MonoBehaviour {
     public NavMeshAgent agent;
     public Transform goal;
 
-    void Start ()
+    void Awake ()
     {
         agent = this.GetComponent<NavMeshAgent>();
         agent.destination = goal.position;
-
     }
     void Update ()
     {
