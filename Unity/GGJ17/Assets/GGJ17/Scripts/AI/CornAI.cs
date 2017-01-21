@@ -88,9 +88,7 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
     void FixedUpdate ()
     {
 
-        Vector3 moveDirection = (transform.position - agent.gameObject.transform.position).normalized;//new Vector3(input.horizontal, 0, input.vertical);
-        Debug.Log(moveDirection);
-        //moveDirection = new Vector3(moveDirection.x, 0, moveDirection.y);
+        Vector3 moveDirection = (transform.position - agent.gameObject.transform.position).normalized;
 
         moveDirection = transform.TransformDirection(moveDirection);
         rb.velocity = moveDirection * 5;
