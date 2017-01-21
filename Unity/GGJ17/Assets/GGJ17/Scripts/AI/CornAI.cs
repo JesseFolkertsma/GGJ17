@@ -5,12 +5,14 @@ using Corn.Movement;
 using System;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(Rigidbody))]
 public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
 
     public Transform[] kernelsLocation;
     private Kernel[] kernels;
-    public Transform goal;
-    NavMeshAgent agent;
+    //public Transform goal;
+    public BaseAI agent;
+    private Rigidbody rb;
 
     private int health;
 
@@ -76,17 +78,27 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
         }
         lives = kernelsLocation.Length;
 
-        agent = GetComponent<NavMeshAgent>();
-        agent.destination = goal.position;
+        transform.position = agent.gameObject.transform.position;
+
+        rb = this.GetComponent<Rigidbody>();
+        //agent = GetComponent<NavMeshAgent>();
+        //agent.destination = goal.position;
     }
 
-    void Update ()
+    void FixedUpdate ()
     {
-        GoTo(goal);
+
+        Vector3 moveDirection = (transform.position - agent.gameObject.transform.position).normalized;//new Vector3(input.horizontal, 0, input.vertical);
+        Debug.Log(moveDirection);
+        //moveDirection = new Vector3(moveDirection.x, 0, moveDirection.y);
+
+        moveDirection = transform.TransformDirection(moveDirection);
+        rb.velocity = moveDirection * 5;
+        //GoTo(goal);
     }
     public void GoTo (Transform trans_)
     {
-        agent.destination = trans_.position;
+
     }
 
     public void EvaluateAction ()
