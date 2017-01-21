@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour {
         LockCursor(true);
     }
 
-    public void StartGame(int buildI = 1)
+    public void StartGame(int buildI = 0)
     {
         Debug.Log("Starting Arena " + buildI);
         inArena = true;
