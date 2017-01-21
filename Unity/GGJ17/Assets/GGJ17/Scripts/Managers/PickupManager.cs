@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class PickupManager : MonoBehaviour {
 
-    Pickup[] pickups;
+    PickupSpawner[] pickups;
 
     void Start()
     {
-        pickups = FindObjectsOfType<Pickup>();
+        pickups = FindObjectsOfType<PickupSpawner>();
+        foreach(PickupSpawner p in pickups)
+        {
+            p.SpawnRandomPickup();
+        }
     }
 }
