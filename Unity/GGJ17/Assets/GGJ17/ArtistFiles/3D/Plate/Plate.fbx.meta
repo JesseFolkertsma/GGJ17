@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 8d5c51f345e13ee44acec0e9fb57a0ca
-timeCreated: 1484960342
+guid: f397768654f0c7245a1e8eda358e069c
+timeCreated: 1484955631
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: "F\xF6hn"
+    4300000: Plate
   materials:
     importMaterials: 0
     materialName: 0
