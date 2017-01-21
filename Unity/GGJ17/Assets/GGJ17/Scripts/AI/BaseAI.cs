@@ -15,7 +15,7 @@ public class BaseAI : MonoBehaviour {
     }
     void Update ()
     {
-        if (goal.position != null)
+        if (goal != null)
         {
             agent.destination = goal.position;
         }

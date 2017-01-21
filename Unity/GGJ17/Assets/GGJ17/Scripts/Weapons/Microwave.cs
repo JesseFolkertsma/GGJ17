@@ -17,7 +17,7 @@ public class Microwave : MonoBehaviour, IWeapon {
 
     void Start()
     {
-        pool = PoolManager.Instance.GetPool("BulletPool") as BulletPool;
+        pool = PoolManager.Instance.GetPool("MicroPool") as BulletPool;
         //TestShoot();
     }
 
