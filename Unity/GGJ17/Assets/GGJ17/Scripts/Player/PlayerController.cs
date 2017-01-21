@@ -11,7 +11,7 @@ namespace Corn.Movement
         #region private fields
         private Rigidbody rb;
         private Animator anim;
-        private int health;
+        private int health = 5;
         float xRotationInput;
         float yRotationInput;
         float vertical;
@@ -19,6 +19,8 @@ namespace Corn.Movement
         IWeapon currenWeapon;
         [SerializeField]
         Transform rightHand;
+        [SerializeField]
+        GameObject ragdoll;
         GameObject weaponInRightHand;
         #endregion
 
@@ -34,7 +36,8 @@ namespace Corn.Movement
 
         public CameraController cam;
 
-        public Transform[] kernalsLocation;
+        public Transform[] kernelsLocation;
+        private Kernel[] kernels;
 
         #endregion
 
@@ -42,7 +45,7 @@ namespace Corn.Movement
 
         #region start
         // Use this for initialization
-        void Start ()
+        void Awake ()
         {
             rb = this.GetComponent<Rigidbody>();
             anim = this.GetComponent<Animator>();
@@ -55,6 +58,7 @@ namespace Corn.Movement
         // Update is called once per frame
         void Update ()
         {
+
             //MovementInput
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
@@ -129,13 +133,27 @@ namespace Corn.Movement
                 return health;
             }
 
-            set {
+            set
+            {
+                Die();
                 health = value;
             }
         }
         public void Die ()
         {
-            throw new NotImplementedException();
+            if (health < 5)
+            {
+                if (ragdoll != null)
+                {
+                    Instantiate(ragdoll, transform.position, transform.rotation);
+                    Destroy(gameObject);
+                    Debug.Log("Die");
+                }
+                else
+                {
+                    Debug.LogWarning("Cant die because ragdoll is not setup!");
+                }
+            }
         }
 
         public void Heal (int amount)
@@ -154,11 +172,16 @@ namespace Corn.Movement
         #region private methods
         private void PlaceKernals ()
         {
-            for (int i = 0; i < kernalsLocation.Length; i++)
+            kernels = new Kernel[kernelsLocation.Length];
+            for (int i = 0; i < kernelsLocation.Length; i++)
             {
-                Kernel sock = kernalsLocation[i].gameObject.AddComponent<Kernel>();
+                Kernel sock = kernelsLocation[i].gameObject.AddComponent<Kernel>();
+                kernels[i] = sock;
+                kernels[i].ParentLife = this;
                 sock.Heal(0);
             }
+            print(kernelsLocation.Length);
+            lives = kernelsLocation.Length;
         }
         #endregion
     }
