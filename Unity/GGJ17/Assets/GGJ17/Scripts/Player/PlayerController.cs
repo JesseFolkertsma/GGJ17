@@ -22,6 +22,7 @@ namespace Corn.Movement
         [SerializeField]
         GameObject ragdoll;
         GameObject weaponInRightHand;
+        bool isDead = false;
         #endregion
 
         #region public fields
@@ -138,17 +139,21 @@ namespace Corn.Movement
         }
         public void Die ()
         {
-            if (health < 5)
+            if (!isDead)
             {
-                if (ragdoll != null)
+                if (health < 1)
                 {
-                    Instantiate(ragdoll, transform.position, transform.rotation);
-                    Destroy(gameObject);
-                    Debug.Log("Die");
-                }
-                else
-                {
-                    Debug.LogWarning("Cant die because ragdoll is not setup!");
+                    if (ragdoll != null)
+                    {
+                        Instantiate(ragdoll, transform.position, transform.rotation);
+                        Destroy(gameObject);
+                        isDead = true;
+                        Debug.Log("Die");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Cant die because ragdoll is not setup!");
+                    }
                 }
             }
         }
