@@ -19,7 +19,8 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance;
     public bool inArena = false;
     bool gamePauzed = false;
-    bool hasWon;
+    public bool hasWon;
+    public GameObject loadScreen;
 
     #region GameStats
     [Header ("GameStats")]
@@ -123,17 +124,19 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("Returning to menu");
         inArena = false;
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void LoadDefeatScreen()
     {
-
+        hasWon = false;
+        SceneManager.LoadScene("Victory");
     }
 
     public void LoadVictoryScreen()
     {
-
+        hasWon = true;
+        SceneManager.LoadScene("Victory");
     }
 
     public void QuitGame()

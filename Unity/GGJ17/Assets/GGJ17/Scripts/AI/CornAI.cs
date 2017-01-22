@@ -18,15 +18,13 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     public GameObject weaponInRightHand;
     public Transform rightHand;
     public LayerMask hitCheck;
-    bool isDead_ = false;
-    private int respawnsleft_ = 5;
-    public EnemyManager manager;
-
 
     // private Vector3 moveDirection;
 
-    //public float Agression;
+    public float Agression;
     public int fear;
+    Animator anim;
+    
     private int health;
 
     public int lives {
@@ -37,57 +35,35 @@ public class CornAI : MonoBehaviour, IPickup, ILives
             health = value;
         }
     }
-
-    public bool isDead {
-        get {
-            return isDead_;
-        }
-
-        set {
-            isDead_ = value;
-        }
-    }
-
-    public int respawnsLeft {
-        get {
-            return respawnsleft_;
-        }
-
-        set {
-            respawnsleft_ = value;
-        }
-    }
-
     public void Die ()
     {
         if (lives <= 0)
         {
             Instantiate(ragdoll, this.transform.position, Quaternion.identity);
             this.gameObject.SetActive(false);
-            isDead = true;
-            SpawnManger.instance.Respawn(this);
-            //StartCoroutine(WaitAndRespawn());
-
         }
         else if (fear > (kernels.Length - lives))
         {
             if (!gettingHealth)
             {
-                if (!GetHealth())
-                {
-                    if (currenWeapon != null)
-                        SetAttackmode();
-                    else
-                        GetWeapon();
-                }
+                GetHealth();
             }
         }
         else
         {
-            if (currenWeapon != null)
-                SetAttackmode();
-            else
-                GetWeapon();
+            SetAttackmode();
+        }
+    }
+
+    void Update()
+    {
+        if(agent.goal != null)
+        {
+            anim.SetFloat("Movement", 1f);
+        }
+        else
+        {
+            anim.SetFloat("Movement", 0f);
         }
     }
 
@@ -95,7 +71,7 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     {
         for (int i = 0; i < kernels.Length; i++)
         {
-            if (!kernels[i].isDead)
+            if (!kernels[i].available)
             {
                 kernels[i].Heal(0);
                 amount--;
@@ -120,23 +96,23 @@ public class CornAI : MonoBehaviour, IPickup, ILives
 
     public void Attack ()
     {
-        if (target != null)
+        //raycast check obstacle();
+
+
+        if (target.GetComponent<ILives>().lives > 0)
         {
-            if (target.GetComponent<ILives>().lives > 0)
+            float r = UnityEngine.Random.Range(0, (float) 1.80);
+            Vector3 aim = new Vector3(target.transform.position.x, target.transform.position.y + r, target.transform.position.z);
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, target.transform.position, out hit, 200f, hitCheck))
             {
-                float r = UnityEngine.Random.Range(0, (float) 1.80);
-                Vector3 aim = new Vector3(target.transform.position.x, target.transform.position.y + r, target.transform.position.z);
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position, target.transform.position, out hit, 200f, hitCheck))
+                if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Terrain"))
                 {
-                    if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Terrain"))
-                    {
-                        GetWeapon();
-                    }
+                    GetWeapon();
                 }
-                currenWeapon.Shoot(aim);
-                StartCoroutine(waitCooldown(currenWeapon.CoolDownTime));
             }
+            currenWeapon.Shoot(aim);
+            StartCoroutine(waitCooldown(currenWeapon.CoolDownTime));
         }
         else
         {
@@ -168,9 +144,11 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     {
         lives = kernelsLocation.Length;
         GetWeapon();
+        anim = GetComponentInChildren<Animator>();
     }
     public bool GetWeapon ()
     {
+        print("getweapon");
         GameObject location = PickupManager.instance.GetPickUp(typeof(WeaponPickup), gameObject);
         if (location)
         {
@@ -199,12 +177,9 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     }
     public void SetAttackmode ()
     {
-        target = manager.AquireTarget(gameObject);
-        if (target)
-        {
-            agent.setGoal(target.transform, Attack);
-            agent.agent.stoppingDistance = currenWeapon.Range;
-        }
+        target = EnemyManager.instance.AquireTarget(gameObject);
+        agent.setGoal(target.transform, Attack);
+        agent.agent.stoppingDistance = currenWeapon.Range;
     }
 
     public IWeapon SetWeapon (GameObject go)
@@ -232,21 +207,5 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     public ILives getLife ()
     {
         return this;
-    }
-
-    public void Respawn (Transform loc)
-    {
-        if (respawnsleft_ > 1)
-        {
-            respawnsLeft--;
-            //getspawnlocation
-            //Transform location = SpawnManger.instance.GetSpawnLocation();
-            transform.position = loc.position;
-            gameObject.SetActive(true);
-            isDead = false;
-            Heal(400);
-            Debug.Log("respawn");
-
-        }
     }
 }
