@@ -68,7 +68,6 @@ public class HairDryer : MonoBehaviour, IWeapon {
 
     public bool Shoot(Vector3 target)
     {
-        Debug.Log("BIEM!");
         if (cd < Time.time)
         {
             cd = Time.time + 1 / fireRate;

@@ -4,9 +4,31 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour {
 
-    public static EnemyManager instance;
+    //public static EnemyManager instance;
 
     public GameObject[] Enemys;
+    public bool PlayerTeam;
+    GameObject player;
+
+
+    public void GetPlayerVictory ()
+    {
+        if (!PlayerTeam)
+            return;
+
+        int total = 0;
+        for (int i = 0; i < Enemys.Length; i++)
+        {
+            if (Enemys[i] != player)
+            {
+                total = Enemys[i].GetComponent<ILives>().respawnsLeft;
+            }
+        }
+        if(total <= 0)
+        {
+            GameManager.instance.LoadVictoryScreen();
+        }
+    }
 
     public GameObject AquireTarget (GameObject self) {
 
@@ -16,11 +38,14 @@ public class EnemyManager : MonoBehaviour {
         {
             if (Enemys[i] != self)
             {
-                float myDist = Vector3.Distance(Enemys[i].transform.position, self.transform.position);
-                if (myDist < dist)
+                if (!Enemys[i].GetComponent<ILives>().isDead)
                 {
-                    dist = myDist;
-                    closest = Enemys[i];
+                    float myDist = Vector3.Distance(Enemys[i].transform.position, self.transform.position);
+                    if (myDist < dist)
+                    {
+                        dist = myDist;
+                        closest = Enemys[i];
+                    }
                 }
             }
         }
@@ -30,8 +55,8 @@ public class EnemyManager : MonoBehaviour {
         }
         return closest;
     }
-    public void Awake ()
-    {
-        instance = this;
-    }
+    //public void Awake ()
+    //{
+
+    //}
 }

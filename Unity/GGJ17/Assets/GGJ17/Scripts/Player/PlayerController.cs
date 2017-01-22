@@ -22,7 +22,8 @@ namespace Corn.Movement
         [SerializeField]
         GameObject ragdoll;
         GameObject weaponInRightHand;
-        bool isDead = false;
+        bool isDead_ = false;
+        private int respawnsleft_ = 5;
         #endregion
 
         #region public fields
@@ -99,11 +100,6 @@ namespace Corn.Movement
             anim.SetFloat("Movement", mov);
         }
 
-        public void Melee ()
-        {
-
-        }
-
         public void Move (Vector2 dir_)
         {
             Vector3 moveDirection = new Vector3(dir_.x, 0, dir_.y);
@@ -135,6 +131,27 @@ namespace Corn.Movement
                 health = value;
             }
         }
+
+        public bool isDead {
+            get {
+                return isDead_;
+            }
+
+            set {
+                isDead_ = value;
+            }
+        }
+
+        public int respawnsLeft {
+            get {
+                return respawnsleft_;
+            }
+
+            set {
+                respawnsleft_ = value;
+            }
+        }
+
         public void Die ()
         {
             if (!isDead)
@@ -160,7 +177,7 @@ namespace Corn.Movement
         {
             for (int i = 0; i < kernels.Length; i++)
             {
-                if (!kernels[i].available)
+                if (!kernels[i].isDead)
                 {
                     kernels[i].Heal(0);
                     amount--;
@@ -201,6 +218,22 @@ namespace Corn.Movement
             }
             print(kernelsLocation.Length);
             lives = kernelsLocation.Length;
+        }
+
+        public void Respawn (Transform loc)
+        {
+           if(respawnsleft_ > 1)
+            {
+                respawnsLeft--;
+                transform.position = loc.position;
+                gameObject.SetActive(true);
+                isDead = false;
+                Heal(400);    
+            }
+            else
+            {
+                GameManager.instance.LoadDefeatScreen();
+            }
         }
         #endregion
     }
