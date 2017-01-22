@@ -80,6 +80,7 @@ public class CameraController : MonoBehaviour {
 
     public void Rotate(Vector3 xrot_)
     {
+        camRotation.localEulerAngles = new Vector3(Mathf.Clamp(camRotation.localEulerAngles.x, 0, 180), camRotation.localEulerAngles.y, camRotation.localEulerAngles.z);
         camRotation.Rotate(xrot_);
         Mathf.Clamp(transform.rotation.x, 90, -90);
     }
