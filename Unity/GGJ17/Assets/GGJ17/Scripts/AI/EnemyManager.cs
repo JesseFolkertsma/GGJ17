@@ -27,16 +27,9 @@ public class EnemyManager : MonoBehaviour {
         return closest;
     }
 
-
 	void Awake ()
     {
         instance = this;
 
 	}
-
-    void Update ()
-    {
-
-
-    }
 }
