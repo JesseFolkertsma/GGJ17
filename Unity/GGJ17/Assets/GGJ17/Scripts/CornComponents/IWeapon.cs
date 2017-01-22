@@ -4,7 +4,8 @@ using UnityEngine;
 
 
 public interface IWeapon {
-    void Shoot(Vector3 target);
+    bool Shoot(Vector3 target);
     void Reload();
     void SetLocation(Transform parent);
+    float Range { get; }
 }

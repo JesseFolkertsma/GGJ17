@@ -65,7 +65,10 @@ namespace Corn.Movement
             {
                 if (Input.GetButton("Left Mouse"))
                 {
-                    currenWeapon.Shoot(cam.GetTarget());
+                    if (currenWeapon.Shoot(cam.GetTarget()))
+                    {
+                        anim.SetTrigger("Shoot");
+                    }
                 }
             }
 
