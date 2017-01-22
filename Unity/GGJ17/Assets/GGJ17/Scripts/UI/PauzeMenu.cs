@@ -27,6 +27,6 @@ public class PauzeMenu : MonoBehaviour {
     public void Restart()
     {
         GameManager.instance.ContinueGame();
-        GameManager.instance.StartGame();
+        GameManager.instance.RestartGame();
     }
 }
