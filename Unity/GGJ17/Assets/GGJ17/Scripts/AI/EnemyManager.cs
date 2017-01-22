@@ -36,7 +36,7 @@ public class EnemyManager : MonoBehaviour {
         {
             GameManager.instance.LoadVictoryScreen();
         }
-        print(total);
+        print("Kills till victory " + total);
     }
 
     public GameObject AquireTarget (GameObject self) {

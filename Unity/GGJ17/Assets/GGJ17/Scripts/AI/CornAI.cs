@@ -169,7 +169,7 @@ namespace Corn.AI
                 kernels[i].clip = popcornClip;
                 sock.Heal(0);
             }
-
+            fear = UnityEngine.Random.Range(50, 200);
 
             agent = GetComponent<BaseAI>();
         }

@@ -14,5 +14,9 @@ namespace Corn.Pool
             this.transform.position = pos.position;
 
         }
+        public void Awake ()
+        {
+            SetDisable();
+        }
     }
 }
