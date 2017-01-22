@@ -6,7 +6,7 @@ using System;
 namespace Corn.Movement
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class PlayerController : MonoBehaviour, IMovement, ILives
+    public class PlayerController : MonoBehaviour, IPickup, ILives
     {
         #region private fields
         private Rigidbody rb;

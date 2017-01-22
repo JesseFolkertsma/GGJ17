@@ -7,7 +7,7 @@ public class HealthPickups : Pickup {
 
     public int healAmount;
 
-    public override void PickUp(IMovement pc)
+    public override void PickUp(IPickup pc)
     {
         base.PickUp(pc);
         pc.getLife().Heal(healAmount);

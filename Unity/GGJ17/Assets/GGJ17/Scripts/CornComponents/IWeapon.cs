@@ -8,6 +8,7 @@ public interface IWeapon {
     void Reload();
     void SetLocation(Transform parent);
     float Range { get; }
+    float CoolDownTime { get; }
     //void SetWeapon (GameObject go, IMovement mov);
     //ILives GetLife ();
 

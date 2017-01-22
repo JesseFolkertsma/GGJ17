@@ -8,7 +8,7 @@ public class HairDryer : MonoBehaviour, IWeapon {
 
     public int ammo;
     public int maxAmmo;
-    private float range = 10f;
+    private float range = 7f;
     public float lifeTime = 20f;
     public float fireRate = 5f;
     public BulletPool pool;
@@ -22,6 +22,12 @@ public class HairDryer : MonoBehaviour, IWeapon {
         get
         {
             return range;
+        }
+    }
+
+    public float CoolDownTime {
+        get {
+            return 1 / fireRate;
         }
     }
 

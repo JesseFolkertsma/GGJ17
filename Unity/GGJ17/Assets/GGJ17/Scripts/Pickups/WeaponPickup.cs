@@ -7,7 +7,7 @@ public class WeaponPickup : Pickup {
 
     public GameObject weaponPrefab;
 
-    public override void PickUp(IMovement pc)
+    public override void PickUp(IPickup pc)
     {
         base.PickUp(pc);
         pc.SetWeapon(weaponPrefab);
