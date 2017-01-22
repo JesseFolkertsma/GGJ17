@@ -5,9 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
+    public enum Mode
+    {
+        MainMenu,
+        TDM,
+        LCS,
+        Wave,
+        Victory
+    };
+
+    public Mode mode = Mode.MainMenu;
+
     public static GameManager instance;
     public bool inArena = false;
     bool gamePauzed = false;
+    bool hasWon;
 
     #region GameStats
     [Header ("GameStats")]
@@ -96,6 +108,12 @@ public class GameManager : MonoBehaviour {
         SceneManager.LoadScene(buildI);
     }
 
+    public void RestartGame()
+    {
+        inArena = true;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     public void EndGame()
     {
         Debug.Log("Ending game");
@@ -106,6 +124,16 @@ public class GameManager : MonoBehaviour {
         Debug.Log("Returning to menu");
         inArena = false;
         SceneManager.LoadScene(0);
+    }
+
+    public void LoadDefeatScreen()
+    {
+
+    }
+
+    public void LoadVictoryScreen()
+    {
+
     }
 
     public void QuitGame()
