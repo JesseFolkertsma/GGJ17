@@ -28,6 +28,26 @@ public class Kernel : MonoBehaviour, ILives
         }
     }
 
+    public bool isDead {
+        get {
+            throw new NotImplementedException();
+        }
+
+        set {
+            throw new NotImplementedException();
+        }
+    }
+
+    public int respawnsLeft {
+        get {
+            throw new NotImplementedException();
+        }
+
+        set {
+            throw new NotImplementedException();
+        }
+    }
+
     public void Die ()
     {
         ParentLife.lives--;
@@ -46,5 +66,10 @@ public class Kernel : MonoBehaviour, ILives
         lives = 3;
         this.gameObject.SetActive(true);
         ParentLife.lives++;
+    }
+
+    public void Respawn ()
+    {
+        throw new NotImplementedException();
     }
 }
