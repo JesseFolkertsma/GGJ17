@@ -1,283 +1,279 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Corn.Movement;
 using System;
-using UnityEngine.AI;
+using Corn.Components;
+using Corn.Pool;
+using Corn.Pickup;
 
-public class CornAI : MonoBehaviour, IPickup, ILives
+namespace Corn.AI
 {
-
-    public Transform[] kernelsLocation;
-    private Kernel[] kernels;
-    public BaseAI agent;
-    public GameObject ragdoll;
-    public Transform player;
-    IWeapon currenWeapon = null;
-    GameObject target;
-    public GameObject weaponInRightHand;
-    public Transform rightHand;
-    public LayerMask hitCheck;
-    bool isDead_ = false;
-    private int respawnsleft_ = 5;
-    public EnemyManager manager;
-    public AudioClip[] popcornClip;
-    public AudioClip[] deadClip;
-    Animator anim;
-
-    // private Vector3 moveDirection;
-
-    //public float Agression;
-    public int fear;
-    private int health;
-
-    public int lives {
-        get {
-            return health;
-        }
-        set {
-            health = value;
-        }
-    }
-
-    public bool isDead {
-        get {
-            return isDead_;
-        }
-
-        set {
-            isDead_ = value;
-        }
-    }
-
-    public int respawnsLeft {
-        get {
-            return respawnsleft_;
-        }
-
-        set {
-            respawnsleft_ = value;
-        }
-    }
-
-    public Kernel[] GetKernals
+    public class CornAI : MonoBehaviour, IPickup, ILives
     {
-        get
-        {
-            return kernels;
-        }
-    }
 
-    public void Die ()
-    {
-        if (lives <= 0)
-        {
-            Instantiate(ragdoll, this.transform.position, Quaternion.identity);
-            this.gameObject.SetActive(false);
-            isDead = true;
-            SoundPool.Instance.PlayAudio(deadClip[UnityEngine.Random.Range(0, deadClip.Length)]);
-            SpawnManger.instance.Respawn(this);
-            //StartCoroutine(WaitAndRespawn());
+        public Transform[] kernelsLocation;
+        private Kernel[] kernels;
+        public BaseAI agent;
+        public GameObject ragdoll;
+        public Transform player;
+        IWeapon currenWeapon = null;
+        GameObject target;
+        public GameObject weaponInRightHand;
+        public Transform rightHand;
+        public LayerMask hitCheck;
+        bool isDead_ = false;
+        private int respawnsleft_ = 5;
+        public EnemyManager manager;
+        public AudioClip[] popcornClip;
+        public AudioClip[] deadClip;
+        Animator anim;
 
-        }
-        else if (fear > (kernels.Length - lives))
-        {
-            if (!gettingHealth)
-            {
-                if (!GetHealth())
-                {
-                    if (currenWeapon != null)
-                        SetAttackmode();
-                    else
-                        GetWeapon();
-                }
+        // private Vector3 moveDirection;
+
+        //public float Agression;
+        public int fear;
+        private int health;
+
+        public int lives {
+            get {
+                return health;
+            }
+            set {
+                health = value;
             }
         }
-        else
+
+        public bool isDead {
+            get {
+                return isDead_;
+            }
+
+            set {
+                isDead_ = value;
+            }
+        }
+
+        public int respawnsLeft {
+            get {
+                return respawnsleft_;
+            }
+
+            set {
+                respawnsleft_ = value;
+            }
+        }
+
+        public Kernel[] GetKernals {
+            get {
+                return kernels;
+            }
+        }
+
+        public void Die ()
         {
-            if (currenWeapon != null)
-                SetAttackmode();
+            if (lives <= 0)
+            {
+                Instantiate(ragdoll, this.transform.position, Quaternion.identity);
+                this.gameObject.SetActive(false);
+                isDead = true;
+                SoundPool.Instance.PlayAudio(deadClip[UnityEngine.Random.Range(0, deadClip.Length)]);
+                SpawnManger.instance.Respawn(this);
+
+            }
+            else if (fear > (kernels.Length - lives))
+            {
+                if (!gettingHealth && !GetHealth())
+                {
+                        if (currenWeapon != null)
+                            SetAttackmode();
+                        else
+                            GetWeapon();
+                   
+                }
+            }
             else
-                GetWeapon();
-        }
-    }
-
-    public void Heal (int amount)
-    {
-        for (int i = 0; i < kernels.Length; i++)
-        {
-            if (kernels[i].isDead)
             {
-                kernels[i].Heal(0);
-                amount--;
+                if (currenWeapon != null)
+                    SetAttackmode();
+                else
+                    GetWeapon();
             }
-            if (amount == 0)
-                break;
         }
-    }
 
-    public void EvaluateAction ()
-    {
-        gettingHealth = false;
-        if (currenWeapon == null)
+        public void Heal (int amount)
         {
-            GetWeapon();
-        }
-        else
-        {
-            SetAttackmode();
-        }
-    }
-
-    public void Attack ()
-    {
-        if (target != null)
-        {
-            if (target.GetComponent<ILives>().lives > 0)
+            for (int i = 0; i < kernels.Length; i++)
             {
-                float r = UnityEngine.Random.Range(0, (float) 1.80);
-                Vector3 aim = new Vector3(target.transform.position.x, target.transform.position.y + r, target.transform.position.z);
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position, target.transform.position, out hit, 200f, hitCheck))
+                if (kernels[i].isDead)
                 {
-                    if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Terrain"))
-                    {
-                        GetWeapon();
-                    }
+                    kernels[i].Heal(0);
+                    amount--;
                 }
-                currenWeapon.Shoot(aim);
-                StartCoroutine(waitCooldown(currenWeapon.CoolDownTime));
+                if (amount == 0)
+                    break;
             }
         }
-        else
-        {
-            GetWeapon();
-        }
-    }
-    IEnumerator waitCooldown (float amount)
-    {
-        yield return new WaitForSeconds(amount + 1);
-        Attack();
-    }
 
-    // Use this for initialization
-    void Awake ()
-    {
-        kernels = new Kernel[kernelsLocation.Length];
-        for (int i = 0; i < kernelsLocation.Length; i++)
+        public void EvaluateAction ()
         {
-            Kernel sock = kernelsLocation[i].gameObject.AddComponent<Kernel>();
-            kernels[i] = sock;
-            kernels[i].ParentLife = this;
-            kernels[i].clip = popcornClip;
-            sock.Heal(0);
-        }
-
-
-        agent = GetComponent<BaseAI>();
-    }
-
-    void Update()
-    {
-        if(agent.goal != null)
-        {
-            anim.SetFloat("Movement", 1);
-        }
-        else
-        {
-            anim.SetFloat("Movement", 0);
-
-        }
-    }
-
-    void Start ()
-    {
-        lives = kernelsLocation.Length;
-        GetWeapon();
-        anim = GetComponentInChildren<Animator>();
-    }
-    public bool GetWeapon ()
-    {
-        GameObject location = PickupManager.instance.GetPickUp(typeof(WeaponPickup), gameObject);
-        if (location)
-        {
-            agent.setGoal(location.transform, EvaluateAction);
-            agent.agent.stoppingDistance = 0.5f;
-            return true;
-        }
-        return false;
-    }
-    bool gettingHealth;
-    public bool GetHealth ()
-    {
-        if (PickupManager.instance)
-        {
-            GameObject pickUp = PickupManager.instance.GetPickUp(typeof(HealthPickups), gameObject);
-            if (pickUp)
+            gettingHealth = false;
+            if (currenWeapon == null)
             {
-                agent.setGoal(pickUp.transform, EvaluateAction);
+                GetWeapon();
+            }
+            else
+            {
+                SetAttackmode();
+            }
+        }
+
+        public void Attack ()
+        {
+            if (target != null)
+            {
+                if (target.GetComponent<ILives>().lives > 0)
+                {
+                    float r = UnityEngine.Random.Range(0, (float) 1.80);
+                    Vector3 aim = new Vector3(target.transform.position.x, target.transform.position.y + r, target.transform.position.z);
+                    RaycastHit hit;
+                    if (Physics.Raycast(transform.position, target.transform.position, out hit, 200f, hitCheck))
+                    {
+                        if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+                        {
+                            GetWeapon();
+                        }
+                    }
+                    currenWeapon.Shoot(aim);
+                    StartCoroutine(waitCooldown(currenWeapon.CoolDownTime));
+                }
+            }
+            else
+            {
+                GetWeapon();
+            }
+        }
+        IEnumerator waitCooldown (float amount)
+        {
+            yield return new WaitForSeconds(amount + 1);
+            Attack();
+        }
+
+        // Use this for initialization
+        void Awake ()
+        {
+            kernels = new Kernel[kernelsLocation.Length];
+            for (int i = 0; i < kernelsLocation.Length; i++)
+            {
+                Kernel sock = kernelsLocation[i].gameObject.AddComponent<Kernel>();
+                kernels[i] = sock;
+                kernels[i].ParentLife = this;
+                kernels[i].clip = popcornClip;
+                sock.Heal(0);
+            }
+
+
+            agent = GetComponent<BaseAI>();
+        }
+
+        void Update ()
+        {
+            if (agent.goal != null)
+            {
+                anim.SetFloat("Movement", 1);
+            }
+            else
+            {
+                anim.SetFloat("Movement", 0);
+
+            }
+        }
+
+        void Start ()
+        {
+            lives = kernelsLocation.Length;
+            GetWeapon();
+            anim = GetComponentInChildren<Animator>();
+        }
+        public bool GetWeapon ()
+        {
+            GameObject location = PickupManager.instance.GetPickUp(typeof(WeaponPickup), gameObject);
+            if (location)
+            {
+                agent.setGoal(location.transform, EvaluateAction);
                 agent.agent.stoppingDistance = 0.5f;
-                gettingHealth = true;
                 return true;
             }
+            return false;
         }
-        return false;
-
-    }
-    public void SetAttackmode ()
-    {
-        target = manager.AquireTarget(gameObject);
-        if (target)
+        bool gettingHealth;
+        public bool GetHealth ()
         {
-            agent.setGoal(target.transform, Attack);
-            agent.agent.stoppingDistance = currenWeapon.Range;
-        }
-    }
-
-    public IWeapon SetWeapon (GameObject go)
-    {
-        try
-        {
-            if (weaponInRightHand != null)
+            if (PickupManager.instance)
             {
-                Destroy(weaponInRightHand);
+                GameObject pickUp = PickupManager.instance.GetPickUp(typeof(HealthPickups), gameObject);
+                if (pickUp)
+                {
+                    agent.setGoal(pickUp.transform, EvaluateAction);
+                    agent.agent.stoppingDistance = 0.5f;
+                    gettingHealth = true;
+                    return true;
+                }
             }
-            weaponInRightHand = Instantiate(go);
-            currenWeapon = weaponInRightHand.GetComponent<IWeapon>();
-            currenWeapon.SetLocation(rightHand);
-            print(currenWeapon);
-            EvaluateAction();
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e);
-        }
-
-        return currenWeapon;
-    }
-
-    public ILives getLife ()
-    {
-        return this;
-    }
-
-    public void Respawn (Transform loc)
-    {
-        if (respawnsleft_ > 1)
-        {
-            respawnsLeft--;
-            //getspawnlocation
-            //Transform location = SpawnManger.instance.GetSpawnLocation();
-            transform.position = loc.position;
-            gameObject.SetActive(true);
-            isDead = false;
-            Heal(400);
-            Debug.Log("respawn");
+            return false;
 
         }
-        else
+        public void SetAttackmode ()
         {
-            manager.GetPlayerVictory();
+            target = manager.AquireTarget(gameObject);
+            if (target)
+            {
+                agent.setGoal(target.transform, Attack);
+                agent.agent.stoppingDistance = currenWeapon.Range;
+            }
+        }
+
+        public IWeapon SetWeapon (GameObject go)
+        {
+            try
+            {
+                if (weaponInRightHand != null)
+                {
+                    Destroy(weaponInRightHand);
+                }
+                weaponInRightHand = Instantiate(go);
+                currenWeapon = weaponInRightHand.GetComponent<IWeapon>();
+                currenWeapon.SetLocation(rightHand);
+                print(currenWeapon);
+                EvaluateAction();
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e);
+            }
+
+            return currenWeapon;
+        }
+
+        public ILives getLife ()
+        {
+            return this;
+        }
+
+        public void Respawn (Transform loc)
+        {
+            if (respawnsleft_ > 1)
+            {
+                respawnsLeft--;
+                transform.position = loc.position;
+                gameObject.SetActive(true);
+                isDead = false;
+                Heal(400);
+                Debug.Log("respawn");
+
+            }
+            else
+            {
+                manager.GetPlayerVictory();
+            }
         }
     }
 }

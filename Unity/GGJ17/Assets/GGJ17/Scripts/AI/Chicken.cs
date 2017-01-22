@@ -1,43 +1,46 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Chicken : MonoBehaviour {
-
-    public List<Transform> waypoints;
-    public Transform waypoint;
-    public int currentWP = 0;
-    public float speed = 5;
-
-    void Update()
+namespace Corn.AI
+{
+    public class Chicken : MonoBehaviour
     {
-        FollowWaypoints();
-        waypoint = waypoints[0];
-    }
 
-    void FollowWaypoints()
-    {
-        if(waypoints.Count > 0)
+        public List<Transform> waypoints;
+        public Transform waypoint;
+        public int currentWP = 0;
+        public float speed = 5;
+
+        void Update ()
         {
-            transform.LookAt(waypoint);
-            transform.Translate(transform.forward * speed * Time.deltaTime);
+            FollowWaypoints();
+            waypoint = waypoints[0];
         }
-    }
 
-    void NextWP()
-    {
-        currentWP++;
-        if(currentWP > waypoints.Count)
+        void FollowWaypoints ()
         {
-            currentWP = 0;
+            if (waypoints.Count > 0)
+            {
+                transform.LookAt(waypoint);
+                transform.Translate(transform.forward * speed * Time.deltaTime);
+            }
         }
-    }
 
-    void OnCollisionEnter(Collision col)
-    {
-        if (col.collider.tag == "Waypoint")
+        void NextWP ()
         {
-            NextWP();
+            currentWP++;
+            if (currentWP > waypoints.Count)
+            {
+                currentWP = 0;
+            }
+        }
+
+        void OnCollisionEnter (Collision col)
+        {
+            if (col.collider.tag == "Waypoint")
+            {
+                NextWP();
+            }
         }
     }
 }

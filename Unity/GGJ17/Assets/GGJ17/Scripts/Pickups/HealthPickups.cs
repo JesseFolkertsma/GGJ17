@@ -1,15 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Corn.Movement;
+using Corn.Controller;
 using UnityEngine;
+using Corn.Components;
 
-public class HealthPickups : Pickup {
-
-    public int healAmount;
-
-    public override void PickUp(IPickup pc)
+namespace Corn.Pickup
+{
+    public class HealthPickups : Pickup
     {
-        base.PickUp(pc);
-        pc.getLife().Heal(healAmount);
+
+        public int healAmount;
+
+        public override void PickUp (IPickup pc)
+        {
+            base.PickUp(pc);
+            pc.getLife().Heal(healAmount);
+        }
     }
 }

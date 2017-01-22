@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Corn.Movement;
+using Corn.Controller;
+using Corn.Components;
 
 public class EnemyManager : MonoBehaviour {
 

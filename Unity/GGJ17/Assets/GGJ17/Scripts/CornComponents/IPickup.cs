@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Corn.Movement
+namespace Corn.Components
 {
     public interface IPickup
     {
         IWeapon SetWeapon (GameObject go);
         ILives getLife ();
     }
+
 }

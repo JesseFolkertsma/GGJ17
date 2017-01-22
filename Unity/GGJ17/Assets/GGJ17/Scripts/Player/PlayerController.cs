@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Corn.Components;
 
-namespace Corn.Movement
+namespace Corn.Controller
 {
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerController : MonoBehaviour, IPickup, ILives

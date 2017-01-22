@@ -1,14 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CommonAssets.Pool;
+using Corn.Pool;
+using Corn.Components;
 
-public class PopcornPool : BasePool {
-
-
-    public virtual void Start ()
+namespace Corn.Pool
+{
+    public class PopcornPool : BasePool
     {
-        Debug.Log(PoolManager.Instance);
-        Kernel.pool = PoolManager.Instance.GetPool("Popcorn") as PopcornPool;
+
+
+        public virtual void Start ()
+        {
+            Debug.Log(PoolManager.Instance);
+            Kernel.pool = PoolManager.Instance.GetPool("Popcorn") as PopcornPool;
+        }
     }
 }

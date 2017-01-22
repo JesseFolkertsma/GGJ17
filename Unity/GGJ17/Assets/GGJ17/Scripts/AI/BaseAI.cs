@@ -1,49 +1,50 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
-
-public class BaseAI : MonoBehaviour {
-
-    public NavMeshAgent agent;
-    public Transform goal;
-    public delegate void OnCompleteAction ();
-    OnCompleteAction onComplete;
-
-    void Awake ()
+namespace Corn.AI
+{
+    public class BaseAI : MonoBehaviour
     {
-        agent = this.GetComponent<NavMeshAgent>();
-        //agent.destination = goal.position;
-    }
 
-    public void setGoal (Transform loc, OnCompleteAction callback)
-    {
-        goal = loc;
-        onComplete = callback;
-    }
+        public NavMeshAgent agent;
+        public Transform goal;
+        public delegate void OnCompleteAction ();
+        OnCompleteAction onComplete;
 
-    void Update ()
-    {
-        if (goal != null)
+        void Awake ()
         {
-            agent.destination = goal.position;
+            agent = this.GetComponent<NavMeshAgent>();
+            //agent.destination = goal.position;
         }
-        else
+
+        public void setGoal (Transform loc, OnCompleteAction callback)
         {
-            if (onComplete != null)
+            goal = loc;
+            onComplete = callback;
+        }
+
+        void Update ()
+        {
+            if (goal != null)
             {
-                onComplete.Invoke();
-                onComplete = null;
+                agent.destination = goal.position;
             }
-        }
-        float dist = agent.remainingDistance;
-        if (dist != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && dist <= agent.stoppingDistance)
-        {
-            if(onComplete != null)
+            else
             {
-                onComplete.Invoke();
-                onComplete = null;
+                if (onComplete != null)
+                {
+                    onComplete.Invoke();
+                    onComplete = null;
+                }
+            }
+            float dist = agent.remainingDistance;
+            if (dist != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && dist <= agent.stoppingDistance)
+            {
+                if (onComplete != null)
+                {
+                    onComplete.Invoke();
+                    onComplete = null;
+                }
             }
         }
     }

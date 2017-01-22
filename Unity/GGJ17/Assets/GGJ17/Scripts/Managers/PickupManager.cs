@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Corn.Pickup;
 
 public class PickupManager : MonoBehaviour {
 

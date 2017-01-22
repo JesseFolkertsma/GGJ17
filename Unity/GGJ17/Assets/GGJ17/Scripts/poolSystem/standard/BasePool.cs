@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace CommonAssets.Pool
+namespace Corn.Pool
 {
 
     public class BasePool : MonoBehaviour {

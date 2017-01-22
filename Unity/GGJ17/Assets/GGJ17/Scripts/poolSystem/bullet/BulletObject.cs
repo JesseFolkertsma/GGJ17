@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CommonAssets.Pool;
+using Corn.Pool;
+using Corn.Components;
 
 public class BulletObject : BasePoolObject {
 

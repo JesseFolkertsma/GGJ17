@@ -1,15 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Corn.Movement;
+using Corn.Components;
 
-public class WeaponPickup : Pickup {
-
-    public GameObject weaponPrefab;
-
-    public override void PickUp(IPickup pc)
+namespace Corn.Pickup
+{
+    public class WeaponPickup : Pickup
     {
-        base.PickUp(pc);
-        pc.SetWeapon(weaponPrefab);
+
+        public GameObject weaponPrefab;
+
+        public override void PickUp (IPickup pc)
+        {
+            base.PickUp(pc);
+            pc.SetWeapon(weaponPrefab);
+        }
     }
 }

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
-namespace CommonAssets.Pool
+
+namespace Corn.Pool
 {
     public class PoolManager : MonoBehaviour {
 

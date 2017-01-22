@@ -1,24 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Corn.Movement;
+﻿using UnityEngine;
+using Corn.Components;
 
-public class Pickup : MonoBehaviour {
-
-    public PickupSpawner attachedSpawner;
-
-    public virtual void PickUp(IPickup pc)
+namespace Corn.Pickup
+{
+    public class Pickup : MonoBehaviour
     {
-        Destroy(gameObject);
-        if(attachedSpawner != null)
-            attachedSpawner.PickedUpPickup();
-    }
 
-    void OnTriggerEnter(Collider col)
-    {
-        if (col.tag == "Player")
+        public PickupSpawner attachedSpawner;
+
+        public virtual void PickUp (IPickup pc)
         {
-            PickUp(col.GetComponent<IPickup>());
+            Destroy(gameObject);
+            if (attachedSpawner != null)
+                attachedSpawner.PickedUpPickup();
+        }
+
+        void OnTriggerEnter (Collider col)
+        {
+            if (col.tag == "Player")
+            {
+                PickUp(col.GetComponent<IPickup>());
+            }
         }
     }
 }

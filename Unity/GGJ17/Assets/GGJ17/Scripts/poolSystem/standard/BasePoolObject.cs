@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 using System.Collections;
 
-namespace CommonAssets.Pool
+namespace Corn.Pool
 {
     public class BasePoolObject : MonoBehaviour
     {
