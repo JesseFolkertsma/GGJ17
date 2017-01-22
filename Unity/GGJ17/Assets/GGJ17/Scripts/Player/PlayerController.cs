@@ -154,16 +154,32 @@ namespace Corn.Movement
         {
             lives += 100;
         }
-        public void SetWeapon (GameObject weapon_)
+        //public void SetWeapon (GameObject weapon_)
+        //{
+        //    if (weaponInRightHand != null)
+        //    {
+        //        Destroy(weaponInRightHand);
+        //    }
+        //    weaponInRightHand = Instantiate(weapon_);
+        //    currenWeapon = weaponInRightHand.GetComponent<IWeapon>();
+        //    currenWeapon.SetLocation(rightHand);
+        //    print(currenWeapon);
+        //}
+        public IWeapon SetWeapon (GameObject go)
         {
-            if(weaponInRightHand != null)
+            if (weaponInRightHand != null)
             {
                 Destroy(weaponInRightHand);
             }
-            weaponInRightHand = Instantiate(weapon_);
+            weaponInRightHand = Instantiate(go);
             currenWeapon = weaponInRightHand.GetComponent<IWeapon>();
             currenWeapon.SetLocation(rightHand);
             print(currenWeapon);
+            return currenWeapon;
+        }
+        public ILives getLife ()
+        {
+            return this;
         }
         #endregion
 

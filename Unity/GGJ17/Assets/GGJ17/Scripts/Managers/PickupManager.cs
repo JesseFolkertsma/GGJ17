@@ -20,9 +20,13 @@ public class PickupManager : MonoBehaviour {
     }
     public GameObject GetPickUp (Type wanted)
     {
+        Debug.Log(pickups);
+        Debug.Log(wanted);
+
         for (int i = 0; i < pickups.Length; i++)
         {
-            if(pickups[i].GetType() == wanted)
+            Debug.Log(pickups[i].p.GetType());
+            if (pickups[i].p.GetType() == wanted)
             {
                 return pickups[i].gameObject;
             }

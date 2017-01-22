@@ -13,8 +13,10 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy
     public BaseAI agent;
     public GameObject ragdoll;
     public Transform player;
-    IWeapon currenWeapon;
+    IWeapon currenWeapon = null;
     GameObject target;
+    public GameObject weaponInRightHand;
+    public Transform rightHand;
     // private Vector3 moveDirection;
 
     public float Agression;
@@ -33,6 +35,12 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy
         }
     }
 
+    public float Range {
+        get {
+            throw new NotImplementedException();
+        }
+    }
+
     public void Die ()
     {
         if (lives <= 0)
@@ -40,16 +48,22 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy
             Instantiate(ragdoll, this.transform.position, Quaternion.identity);
             this.gameObject.SetActive(false);
         }
-        else if (fear > (kernels.Length - lives))
+        else if (fear < (kernels.Length - lives))
         {
             GameObject getHealth = PickupManager.instance.GetPickUp(typeof(HealthPickups));
             if (getHealth)
             {
                 agent.setGoal(getHealth.transform, EvaluateAction);
                 agent.agent.stoppingDistance = 0;
+                Debug.Log("Need Healing");
+
             }
         }
     }
+    //public void SetWeapon (GameObject weapon_)
+    //{
+
+    //}
 
     public void Heal (int amount)
     {
@@ -75,15 +89,21 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy
         Debug.Log("EVALUATE");
         if (currenWeapon == null)
         {
+            Debug.Log("get weapon");
+
             GameObject location = PickupManager.instance.GetPickUp(typeof(WeaponPickup));
-            agent.setGoal(location.transform, EvaluateAction);
-            agent.agent.stoppingDistance = 0;
-            return;
+            Debug.Log(location);
+            if (location)
+            {
+                agent.setGoal(location.transform, EvaluateAction);
+                agent.agent.stoppingDistance = 0;
+                return;
+            }
         }
+        Debug.Log("Kill target");
+
         target = EnemyManager.instance.AquireTarget(gameObject);
         agent.setGoal(target.transform, Attack);
-
-
     }
 
     public void Attack ()
@@ -100,6 +120,8 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy
         }
         else
         {
+            Debug.Log("get weapon");
+
             GameObject location = PickupManager.instance.GetPickUp(typeof(WeaponPickup));
             agent.setGoal(location.transform, EvaluateAction);
             agent.agent.stoppingDistance = 0;
@@ -123,17 +145,29 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy
             sock.Heal(0);
         }
 
-        lives = kernelsLocation.Length;
 
         agent = GetComponent<BaseAI>();
     }
-    void start ()
+    void Start ()
     {
+        lives = kernelsLocation.Length;
+        Debug.Log("start");
+
         if (currenWeapon == null)
         {
-            Transform location = PickupManager.instance.GetPickUp(typeof(WeaponPickup)).transform;
-            agent.setGoal(location, EvaluateAction);
-            agent.agent.stoppingDistance = 0;
+            Debug.Log(PickupManager.instance);
+            GameObject location = PickupManager.instance.GetPickUp(typeof(WeaponPickup));
+            if (location)
+            {
+                agent.setGoal(location.transform, EvaluateAction);
+                agent.agent.stoppingDistance = 0;
+                Debug.Log("get weapon");
+            }
+            else
+            {
+                EvaluateAction();
+            }
+
         }
     }
 
@@ -155,5 +189,43 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy
     public void GoTo (Transform trans_)
     {
         agent.agent.destination = trans_.position;
+    }
+
+    public bool Shoot (Vector3 target)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Reload ()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SetLocation (Transform parent)
+    {
+        throw new NotImplementedException();
+    }
+
+    public ILives GetLife ()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IWeapon SetWeapon (GameObject go)
+    {
+        if (weaponInRightHand != null)
+        {
+            Destroy(weaponInRightHand);
+        }
+        weaponInRightHand = Instantiate(go);
+        currenWeapon = weaponInRightHand.GetComponent<IWeapon>();
+        currenWeapon.SetLocation(rightHand);
+        print(currenWeapon);
+
+        return currenWeapon;
+    }
+    public ILives getLife ()
+    {
+        return this;
     }
 }

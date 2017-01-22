@@ -13,5 +13,9 @@ namespace Corn.Movement
         void Melee ();
 
         bool Run();
+
+        IWeapon SetWeapon (GameObject go);
+        ILives getLife ();
+
     }
 }
