@@ -50,13 +50,16 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy
         }
         else if (fear < (kernels.Length - lives))
         {
-            GameObject getHealth = PickupManager.instance.GetPickUp(typeof(HealthPickups));
-            if (getHealth)
+            Debug.Log(PickupManager.instance);
+            if (PickupManager.instance)
             {
-                agent.setGoal(getHealth.transform, EvaluateAction);
-                agent.agent.stoppingDistance = 0;
-                Debug.Log("Need Healing");
-
+                GameObject getHealth = PickupManager.instance.GetPickUp(typeof(HealthPickups));
+                if (getHealth)
+                {
+                    agent.setGoal(getHealth.transform, EvaluateAction);
+                    agent.agent.stoppingDistance = 0;
+                    Debug.Log("Need Healing");
+                }
             }
         }
     }
@@ -69,7 +72,7 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy
     {
         for (int i = 0; i < kernels.Length; i++)
         {
-            if (kernels[i].available)
+            if (!kernels[i].available)
             {
                 kernels[i].Heal(0);
                 amount--;
@@ -104,6 +107,7 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy
 
         target = EnemyManager.instance.AquireTarget(gameObject);
         agent.setGoal(target.transform, Attack);
+        agent.agent.stoppingDistance = currenWeapon.Range;
     }
 
     public void Attack ()
@@ -205,12 +209,6 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy
     {
         throw new NotImplementedException();
     }
-
-    public ILives GetLife ()
-    {
-        throw new NotImplementedException();
-    }
-
     public IWeapon SetWeapon (GameObject go)
     {
         if (weaponInRightHand != null)
@@ -221,9 +219,10 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy
         currenWeapon = weaponInRightHand.GetComponent<IWeapon>();
         currenWeapon.SetLocation(rightHand);
         print(currenWeapon);
-
+        EvaluateAction();
         return currenWeapon;
     }
+
     public ILives getLife ()
     {
         return this;

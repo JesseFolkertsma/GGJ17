@@ -16,11 +16,8 @@ public class Pickup : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        Debug.Log("collision pickup");
-
         if (col.tag == "Player")
         {
-            Debug.Log("pickupcall");
             PickUp(col.GetComponent<IMovement>());
         }
     }

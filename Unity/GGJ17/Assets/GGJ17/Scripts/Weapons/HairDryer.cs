@@ -8,7 +8,7 @@ public class HairDryer : MonoBehaviour, IWeapon {
 
     public int ammo;
     public int maxAmmo;
-    private float range = 200f;
+    private float range = 10f;
     public float lifeTime = 20f;
     public float fireRate = 5f;
     public BulletPool pool;
@@ -62,6 +62,7 @@ public class HairDryer : MonoBehaviour, IWeapon {
 
     public bool Shoot(Vector3 target)
     {
+        Debug.Log("BIEM!");
         if (cd < Time.time)
         {
             cd = Time.time + 1 / fireRate;
