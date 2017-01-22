@@ -105,6 +105,7 @@ namespace Corn.Movement
 
         public void Move (Vector2 dir_)
         {
+            Debug.Log("moving");
             Vector3 moveDirection = new Vector3(dir_.x, 0, dir_.y);
             moveDirection = transform.TransformDirection(moveDirection);
             rb.velocity = moveDirection * (Run() ? runSpeed : walkSpeed);

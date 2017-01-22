@@ -17,6 +17,8 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     GameObject target;
     public GameObject weaponInRightHand;
     public Transform rightHand;
+    public LayerMask hitCheck;
+
     // private Vector3 moveDirection;
 
     public float Agression;
@@ -41,9 +43,16 @@ public class CornAI : MonoBehaviour, IPickup, ILives
             Instantiate(ragdoll, this.transform.position, Quaternion.identity);
             this.gameObject.SetActive(false);
         }
-        else if (fear < (kernels.Length - lives))
+        else if (fear > (kernels.Length - lives))
         {
-            GetHealth();
+            if (!gettingHealth)
+            {
+                GetHealth();
+            }
+        }
+        else
+        {
+            SetAttackmode();
         }
     }
 
@@ -65,6 +74,7 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     public void EvaluateAction ()
     {
         Debug.Log("EVALUATE");
+        gettingHealth = false;
         if (currenWeapon == null)
         {
             GetWeapon();
@@ -77,7 +87,19 @@ public class CornAI : MonoBehaviour, IPickup, ILives
 
     public void Attack ()
     {
-        currenWeapon.Shoot(target.transform.position);
+        //raycast check obstacle();
+        float r = UnityEngine.Random.Range(0, (float) 1.80);
+        Vector3 aim = new Vector3(target.transform.position.x, target.transform.position.y + r, target.transform.position.z);
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, target.transform.position, out hit, 200f, hitCheck))
+        {
+            if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+            {
+                GetWeapon();
+            }
+        }
+
+        currenWeapon.Shoot(aim);
         if (target.GetComponent<ILives>().lives > 0)
         {
             StartCoroutine(waitCooldown(currenWeapon.CoolDownTime));
@@ -89,7 +111,7 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     }
     IEnumerator waitCooldown (float amount)
     {
-        yield return new WaitForSeconds(amount);
+        yield return new WaitForSeconds(amount + 1);
         Attack();
     }
 
@@ -120,21 +142,23 @@ public class CornAI : MonoBehaviour, IPickup, ILives
         if (location)
         {
             agent.setGoal(location.transform, EvaluateAction);
-            agent.agent.stoppingDistance = 0;
+            agent.agent.stoppingDistance = 0.5f;
             return true;
         }
         return false;
     }
+    bool gettingHealth;
     public bool GetHealth ()
     {
         Debug.Log("gethealth");
         if (PickupManager.instance)
         {
-            GameObject getHealth = PickupManager.instance.GetPickUp(typeof(HealthPickups), gameObject);
-            if (getHealth)
+            GameObject pickUp = PickupManager.instance.GetPickUp(typeof(HealthPickups), gameObject);
+            if (pickUp)
             {
-                agent.setGoal(getHealth.transform, EvaluateAction);
-                agent.agent.stoppingDistance = 0;
+                agent.setGoal(pickUp.transform, EvaluateAction);
+                agent.agent.stoppingDistance = 0.5f;
+                gettingHealth = true;
                 return true;
             }
         }
