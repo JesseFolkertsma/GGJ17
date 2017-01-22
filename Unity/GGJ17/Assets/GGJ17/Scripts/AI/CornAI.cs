@@ -23,6 +23,7 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     public EnemyManager manager;
     public AudioClip popcornClip;
     public AudioClip[] deadClip;
+    Animator anim;
 
     // private Vector3 moveDirection;
 
@@ -167,10 +168,25 @@ public class CornAI : MonoBehaviour, IPickup, ILives
 
         agent = GetComponent<BaseAI>();
     }
+
+    void Update()
+    {
+        if(agent.goal != null)
+        {
+            anim.SetFloat("Movement", 1);
+        }
+        else
+        {
+            anim.SetFloat("Movement", 0);
+
+        }
+    }
+
     void Start ()
     {
         lives = kernelsLocation.Length;
         GetWeapon();
+        anim = GetComponentInChildren<Animator>();
     }
     public bool GetWeapon ()
     {

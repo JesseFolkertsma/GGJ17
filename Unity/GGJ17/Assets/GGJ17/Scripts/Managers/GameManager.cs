@@ -129,12 +129,14 @@ public class GameManager : MonoBehaviour {
 
     public void LoadDefeatScreen()
     {
+        LockCursor(false);
         hasWon = false;
         SceneManager.LoadScene(2);
     }
 
     public void LoadVictoryScreen()
     {
+        LockCursor(false);
         hasWon = true;
         SceneManager.LoadScene(2);
     }

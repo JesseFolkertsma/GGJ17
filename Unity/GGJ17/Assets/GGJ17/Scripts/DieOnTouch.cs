@@ -5,7 +5,6 @@ using UnityEngine;
 public class DieOnTouch : MonoBehaviour {
     void OnTriggerEnter(Collider col)
     {
-        print(col);
         if (col.GetComponent<ILives>() != null)
         {
             col.GetComponent<ILives>().lives = 0;

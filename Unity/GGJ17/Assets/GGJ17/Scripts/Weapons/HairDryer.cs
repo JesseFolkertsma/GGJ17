@@ -86,7 +86,7 @@ public class HairDryer : MonoBehaviour, IWeapon {
     {
         transform.parent = parent;
         transform.localPosition = Vector3.zero;
-        transform.rotation = Quaternion.identity;
+        transform.localEulerAngles = Vector3.zero;
     }
 
     public void SetWeapon (GameObject go)

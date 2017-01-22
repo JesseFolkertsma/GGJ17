@@ -20,8 +20,8 @@ public class PickupManager : MonoBehaviour {
     }
     public GameObject GetPickUp (Type wanted, GameObject self)
     {
-        Debug.Log(pickups);
-        Debug.Log(wanted);
+        //Debug.Log(pickups);
+        //Debug.Log(wanted);
         float dist = 99999;
         GameObject obj = null;
 

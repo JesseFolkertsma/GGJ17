@@ -58,7 +58,7 @@ public class Kernel : MonoBehaviour, ILives
         ParentLife.Die();
         corn.pop(this.transform);
         corn.SetEnable();
-        SoundPool.Instance.PlayAudio(clip);
+        //SoundPool.Instance.PlayAudio(clip);
         this.gameObject.SetActive(false);
 
     }

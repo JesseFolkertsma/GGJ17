@@ -163,9 +163,10 @@ namespace Corn.Movement
                     if (ragdoll != null)
                     {
                         Instantiate(ragdoll, transform.position, transform.rotation);
-                        Destroy(gameObject);
+                        gameObject.SetActive(false);
                         isDead = true;
-                        SoundPool.Instance.PlayAudio(deadClip[UnityEngine.Random.Range(0, deadClip.Length)]);
+                        //SoundPool.Instance.PlayAudio(deadClip[UnityEngine.Random.Range(0, deadClip.Length -1)]);
+                        SpawnManger.instance.Respawn(this);
                         Debug.Log("Die");
                     }
                     else
