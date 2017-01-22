@@ -9,4 +9,5 @@ public interface ILives {
     bool isDead { get; set; }
     void Respawn (Transform location);
     int respawnsLeft { get; set; }
+    Kernel[] GetKernals { get; }
 }

@@ -21,7 +21,7 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     bool isDead_ = false;
     private int respawnsleft_ = 5;
     public EnemyManager manager;
-    public AudioClip popcornClip;
+    public AudioClip[] popcornClip;
     public AudioClip[] deadClip;
     Animator anim;
 
@@ -57,6 +57,14 @@ public class CornAI : MonoBehaviour, IPickup, ILives
 
         set {
             respawnsleft_ = value;
+        }
+    }
+
+    public Kernel[] GetKernals
+    {
+        get
+        {
+            return kernels;
         }
     }
 
@@ -98,7 +106,7 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     {
         for (int i = 0; i < kernels.Length; i++)
         {
-            if (!kernels[i].isDead)
+            if (kernels[i].isDead)
             {
                 kernels[i].Heal(0);
                 amount--;

@@ -16,13 +16,13 @@ public class VictoryScreen : MonoBehaviour {
         {
             text.text = "Defeat";
         }
+        GameManager.instance.LockCursor(false);
     }
 
-    void Update()
+    public void toMainMenu()
     {
-        if (Input.GetButtonDown("Jump"))
-        {
+
             GameManager.instance.ReturnToMenu();
-        }
+        
     }
 }

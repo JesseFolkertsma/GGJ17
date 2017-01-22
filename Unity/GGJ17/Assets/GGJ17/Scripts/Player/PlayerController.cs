@@ -33,7 +33,7 @@ namespace Corn.Movement
         public float rotationSpeed;
         public bool grounded;
         public CameraController cam;
-        public AudioClip popcornClip;
+        public AudioClip[] popcornClip;
         public AudioClip[] deadClip;
 
         public Transform[] kernelsLocation;
@@ -42,6 +42,14 @@ namespace Corn.Movement
         #endregion
 
 
+
+        public Kernel[] GetKernals
+        {
+            get
+            {
+                return kernels;
+            }
+        }
 
         #region start
         // Use this for initialization
@@ -181,7 +189,7 @@ namespace Corn.Movement
         {
             for (int i = 0; i < kernels.Length; i++)
             {
-                if (!kernels[i].isDead)
+                if (kernels[i].isDead)
                 {
                     kernels[i].Heal(0);
                     amount--;
@@ -189,6 +197,7 @@ namespace Corn.Movement
                 if (amount == 0)
                     break;
             }
+            Debug.Log(lives);
         }
 
         public IWeapon SetWeapon (GameObject go)

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Corn.Movement;
 
 public class EnemyManager : MonoBehaviour {
 
@@ -9,17 +10,23 @@ public class EnemyManager : MonoBehaviour {
     public GameObject[] Enemys;
     public bool PlayerTeam;
     GameObject player;
+    int deadEnemies;
 
+    void Start()
+    {
+        player = FindObjectOfType<PlayerController>().gameObject;
+    }
 
     public void GetPlayerVictory ()
     {
         if (!PlayerTeam)
             return;
 
+
         int total = 0;
         for (int i = 0; i < Enemys.Length; i++)
         {
-            if (Enemys[i] != player)
+            if (Enemys[i].gameObject != player)
             {
                 total = Enemys[i].GetComponent<ILives>().respawnsLeft;
             }
@@ -28,6 +35,7 @@ public class EnemyManager : MonoBehaviour {
         {
             GameManager.instance.LoadVictoryScreen();
         }
+        print(total);
     }
 
     public GameObject AquireTarget (GameObject self) {

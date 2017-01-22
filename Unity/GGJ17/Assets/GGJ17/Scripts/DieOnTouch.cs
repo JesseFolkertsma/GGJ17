@@ -7,8 +7,13 @@ public class DieOnTouch : MonoBehaviour {
     {
         if (col.GetComponent<ILives>() != null)
         {
-            col.GetComponent<ILives>().lives = 0;
-            col.GetComponent<ILives>().Die();
+            foreach(Kernel k in col.GetComponent<ILives>().GetKernals)
+            {
+                if (!k.isDead)
+                    k.Die();
+            }
+            //col.GetComponent<ILives>().lives = 0;
+            //col.GetComponent<ILives>().Die();
         }
     }
 }

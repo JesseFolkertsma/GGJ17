@@ -8,9 +8,9 @@ public class Kernel : MonoBehaviour, ILives
 {
     public ILives ParentLife;
 
-    public AudioClip clip;
+    public AudioClip[] clip;
 
-    bool available;
+    bool isDead_;
 
     private int lives_ = 3;
 
@@ -32,11 +32,11 @@ public class Kernel : MonoBehaviour, ILives
 
     public bool isDead {
         get {
-            return available;
+            return isDead_;
         }
 
         set {
-            available = value;
+            isDead_ = value;
         }
     }
 
@@ -50,22 +50,32 @@ public class Kernel : MonoBehaviour, ILives
         }
     }
 
+    public Kernel[] GetKernals
+    {
+        get
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public void Die ()
     {
         ParentLife.lives--;
-        available = false;
+        isDead = true;
         PopcornObject corn = pool.GetPooledObject() as PopcornObject;
         ParentLife.Die();
         corn.pop(this.transform);
         corn.SetEnable();
-        //SoundPool.Instance.PlayAudio(clip);
+        int rng = UnityEngine.Random.Range(0, clip.Length - 1);
+        SoundObject obj = SoundPool.Instance.PlayAudio(clip[rng]);
+        obj.transform.position = this.transform.position;
         this.gameObject.SetActive(false);
 
     }
 
     public void Heal (int amount)
     {
-        available = true;
+        isDead = false;
         lives = 3;
         this.gameObject.SetActive(true);
         ParentLife.lives++;
