@@ -14,11 +14,13 @@ public class BaseAI : MonoBehaviour {
     void Awake ()
     {
         agent = this.GetComponent<NavMeshAgent>();
-        agent.destination = goal.position;
+        //agent.destination = goal.position;
     }
 
     public void setGoal (Transform loc, OnCompleteAction callback)
     {
+        Debug.Log("SETTING GOAL");
+
         goal = loc;
         onComplete = callback;
     }
@@ -34,7 +36,12 @@ public class BaseAI : MonoBehaviour {
         {
             if(onComplete != null)
             {
+                Debug.Log("complete "+ dist);
+                Debug.Log(goal);
+
+
                 onComplete.Invoke();
+                onComplete = null;
             }
         }
     }

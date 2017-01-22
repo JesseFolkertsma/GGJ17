@@ -82,4 +82,9 @@ public class HairDryer : MonoBehaviour, IWeapon {
         transform.localPosition = Vector3.zero;
         transform.rotation = Quaternion.identity;
     }
+
+    public void SetWeapon (GameObject go)
+    {
+        throw new NotImplementedException();
+    }
 }

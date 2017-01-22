@@ -82,4 +82,9 @@ public class Microwave : MonoBehaviour, IWeapon {
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
     }
+
+    public void SetWeapon (GameObject go)
+    {
+        throw new NotImplementedException();
+    }
 }
