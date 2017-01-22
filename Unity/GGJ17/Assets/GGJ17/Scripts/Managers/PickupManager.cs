@@ -27,7 +27,6 @@ public class PickupManager : MonoBehaviour {
 
         for (int i = 0; i < pickups.Length; i++)
         {
-            Debug.Log(pickups[i].p.GetType());
             if (pickups[i].p.GetType() == wanted)
             {
                 var mydist = Vector3.Distance(self.transform.position, pickups[i].transform.position);

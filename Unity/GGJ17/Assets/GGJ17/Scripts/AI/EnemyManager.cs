@@ -7,15 +7,19 @@ public class EnemyManager : MonoBehaviour {
     //public static EnemyManager instance;
 
     public GameObject[] Enemys;
+    public bool PlayerTeam;
+    GameObject player;
 
 
-
-    public int GetTeamLivesLeft (GameObject self)
+    public void GetPlayerVictory ()
     {
+        if (!PlayerTeam)
+            return;
+
         int total = 0;
         for (int i = 0; i < Enemys.Length; i++)
         {
-            if (Enemys[i] != self)
+            if (Enemys[i] != player)
             {
                 total = Enemys[i].GetComponent<ILives>().respawnsLeft;
             }
@@ -24,8 +28,6 @@ public class EnemyManager : MonoBehaviour {
         {
             GameManager.instance.LoadVictoryScreen();
         }
-
-        return total;
     }
 
     public GameObject AquireTarget (GameObject self) {
