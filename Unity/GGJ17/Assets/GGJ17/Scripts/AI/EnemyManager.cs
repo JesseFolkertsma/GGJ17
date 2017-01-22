@@ -24,6 +24,10 @@ public class EnemyManager : MonoBehaviour {
                 }
             }
         }
+        if(closest == null)
+        {
+            print("NO target!");
+        }
         return closest;
     }
     public void Awake ()
