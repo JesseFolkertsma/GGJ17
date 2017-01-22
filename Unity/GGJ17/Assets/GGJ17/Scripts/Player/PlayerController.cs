@@ -33,6 +33,8 @@ namespace Corn.Movement
         public float rotationSpeed;
         public bool grounded;
         public CameraController cam;
+        public AudioClip popcornClip;
+        public AudioClip[] deadClip;
 
         public Transform[] kernelsLocation;
         private Kernel[] kernels;
@@ -163,6 +165,7 @@ namespace Corn.Movement
                         Instantiate(ragdoll, transform.position, transform.rotation);
                         Destroy(gameObject);
                         isDead = true;
+                        SoundPool.Instance.PlayAudio(deadClip[UnityEngine.Random.Range(0, deadClip.Length)]);
                         Debug.Log("Die");
                     }
                     else
@@ -214,6 +217,7 @@ namespace Corn.Movement
                 Kernel sock = kernelsLocation[i].gameObject.AddComponent<Kernel>();
                 kernels[i] = sock;
                 kernels[i].ParentLife = this;
+                kernels[i].clip = popcornClip;
                 sock.Heal(0);
             }
             print(kernelsLocation.Length);

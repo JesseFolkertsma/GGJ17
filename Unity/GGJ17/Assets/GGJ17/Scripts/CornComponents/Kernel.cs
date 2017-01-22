@@ -8,6 +8,8 @@ public class Kernel : MonoBehaviour, ILives
 {
     public ILives ParentLife;
 
+    public AudioClip clip;
+
     bool available;
 
     private int lives_ = 3;
@@ -56,6 +58,7 @@ public class Kernel : MonoBehaviour, ILives
         ParentLife.Die();
         corn.pop(this.transform);
         corn.SetEnable();
+        SoundPool.Instance.PlayAudio(clip);
         this.gameObject.SetActive(false);
 
     }

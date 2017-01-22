@@ -21,7 +21,8 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     bool isDead_ = false;
     private int respawnsleft_ = 5;
     public EnemyManager manager;
-
+    public AudioClip popcornClip;
+    public AudioClip[] deadClip;
 
     // private Vector3 moveDirection;
 
@@ -65,6 +66,7 @@ public class CornAI : MonoBehaviour, IPickup, ILives
             Instantiate(ragdoll, this.transform.position, Quaternion.identity);
             this.gameObject.SetActive(false);
             isDead = true;
+            SoundPool.Instance.PlayAudio(deadClip[UnityEngine.Random.Range(0, deadClip.Length)]);
             SpawnManger.instance.Respawn(this);
             //StartCoroutine(WaitAndRespawn());
 
@@ -158,6 +160,7 @@ public class CornAI : MonoBehaviour, IPickup, ILives
             Kernel sock = kernelsLocation[i].gameObject.AddComponent<Kernel>();
             kernels[i] = sock;
             kernels[i].ParentLife = this;
+            kernels[i].clip = popcornClip;
             sock.Heal(0);
         }
 
