@@ -8,6 +8,26 @@ public class EnemyManager : MonoBehaviour {
 
     public GameObject[] Enemys;
 
+
+
+    public int GetTeamLivesLeft (GameObject self)
+    {
+        int total = 0;
+        for (int i = 0; i < Enemys.Length; i++)
+        {
+            if (Enemys[i] != self)
+            {
+                total = Enemys[i].GetComponent<ILives>().respawnsLeft;
+            }
+        }
+        if(total <= 0)
+        {
+            GameManager.instance.LoadVictoryScreen();
+        }
+
+        return total;
+    }
+
     public GameObject AquireTarget (GameObject self) {
 
         float dist = 9999999;
@@ -33,8 +53,8 @@ public class EnemyManager : MonoBehaviour {
         }
         return closest;
     }
-    public void Awake ()
-    {
-        instance = this;
-    }
+    //public void Awake ()
+    //{
+
+    //}
 }

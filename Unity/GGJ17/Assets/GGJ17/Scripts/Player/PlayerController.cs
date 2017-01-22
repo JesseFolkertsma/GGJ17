@@ -177,7 +177,7 @@ namespace Corn.Movement
         {
             for (int i = 0; i < kernels.Length; i++)
             {
-                if (!kernels[i].available)
+                if (!kernels[i].isDead)
                 {
                     kernels[i].Heal(0);
                     amount--;
@@ -220,12 +220,19 @@ namespace Corn.Movement
             lives = kernelsLocation.Length;
         }
 
-        public void Respawn ()
+        public void Respawn (Transform loc)
         {
            if(respawnsleft_ > 1)
             {
                 respawnsLeft--;
-                //getspawnlocation
+                transform.position = loc.position;
+                gameObject.SetActive(true);
+                isDead = false;
+                Heal(400);    
+            }
+            else
+            {
+                GameManager.instance.LoadDefeatScreen();
             }
         }
         #endregion

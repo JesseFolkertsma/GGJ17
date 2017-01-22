@@ -8,7 +8,7 @@ public class Kernel : MonoBehaviour, ILives
 {
     public ILives ParentLife;
 
-    public bool available;
+    bool available;
 
     private int lives_ = 3;
 
@@ -30,11 +30,11 @@ public class Kernel : MonoBehaviour, ILives
 
     public bool isDead {
         get {
-            throw new NotImplementedException();
+            return available;
         }
 
         set {
-            throw new NotImplementedException();
+            available = value;
         }
     }
 
@@ -68,7 +68,7 @@ public class Kernel : MonoBehaviour, ILives
         ParentLife.lives++;
     }
 
-    public void Respawn ()
+    public void Respawn (Transform lol)
     {
         throw new NotImplementedException();
     }

@@ -7,6 +7,6 @@ public interface ILives {
     void Die();
     void Heal(int amount);
     bool isDead { get; set; }
-    void Respawn ();
+    void Respawn (Transform location);
     int respawnsLeft { get; set; }
 }

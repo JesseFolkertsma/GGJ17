@@ -8,19 +8,25 @@ public class SpawnManger : MonoBehaviour {
     public Transform[] spawnLocations;
     int lastIndex = 0;
 
-
-    public Transform GetSpawnLocation ()
+    public void Awake ()
     {
+        instance = this;
+    }
+
+    public void Respawn (ILives life)
+    {
+        lastIndex++;
         if(lastIndex >= spawnLocations.Length)
         {
-            lastIndex = 0;
+             lastIndex = 0;
         }
-        for (int i = lastIndex; i < spawnLocations.Length; i++)
-        {
+        StartCoroutine(waitAndSpawn(spawnLocations[lastIndex], life));
+    }
+    public IEnumerator waitAndSpawn (Transform loc, ILives live)
+    {
+        yield return new WaitForSeconds(5);
+        live.Respawn(loc);
 
-        }
-
-        return null;
     }
 
 }
