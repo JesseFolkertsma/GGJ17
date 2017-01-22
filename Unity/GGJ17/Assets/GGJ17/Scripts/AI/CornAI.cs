@@ -18,6 +18,10 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     public GameObject weaponInRightHand;
     public Transform rightHand;
     public LayerMask hitCheck;
+    bool isDead_ = false;
+    private int respawnsleft_ = 5;
+    public EnemyManager manager;
+
 
     // private Vector3 moveDirection;
 
@@ -35,23 +39,54 @@ public class CornAI : MonoBehaviour, IPickup, ILives
             health = value;
         }
     }
+
+    public bool isDead {
+        get {
+            return isDead_;
+        }
+
+        set {
+            isDead_ = value;
+        }
+    }
+
+    public int respawnsLeft {
+        get {
+            return respawnsleft_;
+        }
+
+        set {
+            respawnsleft_ = value;
+        }
+    }
+
     public void Die ()
     {
         if (lives <= 0)
         {
             Instantiate(ragdoll, this.transform.position, Quaternion.identity);
             this.gameObject.SetActive(false);
+            isDead = true;
         }
         else if (fear > (kernels.Length - lives))
         {
             if (!gettingHealth)
             {
-                GetHealth();
+                if (!GetHealth())
+                {
+                    if (currenWeapon != null)
+                        SetAttackmode();
+                    else
+                        GetWeapon();
+                }
             }
         }
         else
         {
-            SetAttackmode();
+            if (currenWeapon != null)
+                SetAttackmode();
+            else
+                GetWeapon();
         }
     }
 
@@ -163,7 +198,7 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     }
     public void SetAttackmode ()
     {
-        target = EnemyManager.instance.AquireTarget(gameObject);
+        target = manager.AquireTarget(gameObject);
         agent.setGoal(target.transform, Attack);
         agent.agent.stoppingDistance = currenWeapon.Range;
     }
@@ -193,5 +228,10 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     public ILives getLife ()
     {
         return this;
+    }
+
+    public void Respawn ()
+    {
+        throw new NotImplementedException();
     }
 }
