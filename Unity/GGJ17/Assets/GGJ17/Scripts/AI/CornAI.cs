@@ -248,5 +248,9 @@ public class CornAI : MonoBehaviour, IPickup, ILives
             Debug.Log("respawn");
 
         }
+        else
+        {
+            manager.GetPlayerVictory();
+        }
     }
 }
