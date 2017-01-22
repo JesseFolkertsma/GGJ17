@@ -33,7 +33,6 @@ public class CornAI : MonoBehaviour, IPickup, ILives
         }
         set {
             health = value;
-            Die();
         }
     }
     public void Die ()
@@ -58,7 +57,6 @@ public class CornAI : MonoBehaviour, IPickup, ILives
 
     public void Heal (int amount)
     {
-        Debug.Log("Heals");
         for (int i = 0; i < kernels.Length; i++)
         {
             if (!kernels[i].available)
@@ -73,7 +71,6 @@ public class CornAI : MonoBehaviour, IPickup, ILives
 
     public void EvaluateAction ()
     {
-        Debug.Log("EVALUATE");
         gettingHealth = false;
         if (currenWeapon == null)
         {
@@ -88,20 +85,21 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     public void Attack ()
     {
         //raycast check obstacle();
-        float r = UnityEngine.Random.Range(0, (float) 1.80);
-        Vector3 aim = new Vector3(target.transform.position.x, target.transform.position.y + r, target.transform.position.z);
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, target.transform.position, out hit, 200f, hitCheck))
-        {
-            if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Terrain"))
-            {
-                GetWeapon();
-            }
-        }
 
-        currenWeapon.Shoot(aim);
+
         if (target.GetComponent<ILives>().lives > 0)
         {
+            float r = UnityEngine.Random.Range(0, (float) 1.80);
+            Vector3 aim = new Vector3(target.transform.position.x, target.transform.position.y + r, target.transform.position.z);
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, target.transform.position, out hit, 200f, hitCheck))
+            {
+                if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+                {
+                    GetWeapon();
+                }
+            }
+            currenWeapon.Shoot(aim);
             StartCoroutine(waitCooldown(currenWeapon.CoolDownTime));
         }
         else
@@ -137,7 +135,6 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     }
     public bool GetWeapon ()
     {
-        Debug.Log("getweapon");
         GameObject location = PickupManager.instance.GetPickUp(typeof(WeaponPickup), gameObject);
         if (location)
         {
@@ -150,7 +147,6 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     bool gettingHealth;
     public bool GetHealth ()
     {
-        Debug.Log("gethealth");
         if (PickupManager.instance)
         {
             GameObject pickUp = PickupManager.instance.GetPickUp(typeof(HealthPickups), gameObject);
@@ -167,7 +163,6 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     }
     public void SetAttackmode ()
     {
-        Debug.Log("attackmode");
         target = EnemyManager.instance.AquireTarget(gameObject);
         agent.setGoal(target.transform, Attack);
         agent.agent.stoppingDistance = currenWeapon.Range;

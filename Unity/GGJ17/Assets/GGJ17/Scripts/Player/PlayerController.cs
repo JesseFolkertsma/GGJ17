@@ -106,7 +106,6 @@ namespace Corn.Movement
 
         public void Move (Vector2 dir_)
         {
-            Debug.Log("moving");
             Vector3 moveDirection = new Vector3(dir_.x, 0, dir_.y);
             moveDirection = transform.TransformDirection(moveDirection);
             rb.velocity = moveDirection * (Run() ? runSpeed : walkSpeed);
@@ -133,7 +132,6 @@ namespace Corn.Movement
 
             set
             {
-                Die();
                 health = value;
             }
         }
@@ -160,7 +158,16 @@ namespace Corn.Movement
 
         public void Heal (int amount)
         {
-            lives += 100;
+            for (int i = 0; i < kernels.Length; i++)
+            {
+                if (!kernels[i].available)
+                {
+                    kernels[i].Heal(0);
+                    amount--;
+                }
+                if (amount == 0)
+                    break;
+            }
         }
         //public void SetWeapon (GameObject weapon_)
         //{
