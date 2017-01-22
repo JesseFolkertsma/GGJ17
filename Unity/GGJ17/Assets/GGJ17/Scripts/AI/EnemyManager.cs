@@ -38,13 +38,16 @@ public class EnemyManager : MonoBehaviour {
         {
             if (Enemys[i] != self)
             {
-                if (!Enemys[i].GetComponent<ILives>().isDead)
+                if (Enemys[i].activeInHierarchy == true)
                 {
-                    float myDist = Vector3.Distance(Enemys[i].transform.position, self.transform.position);
-                    if (myDist < dist)
+                    if (!Enemys[i].GetComponent<ILives>().isDead)
                     {
-                        dist = myDist;
-                        closest = Enemys[i];
+                        float myDist = Vector3.Distance(Enemys[i].transform.position, self.transform.position);
+                        if (myDist < dist)
+                        {
+                            dist = myDist;
+                            closest = Enemys[i];
+                        }
                     }
                 }
             }

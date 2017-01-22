@@ -130,13 +130,13 @@ public class GameManager : MonoBehaviour {
     public void LoadDefeatScreen()
     {
         hasWon = false;
-        SceneManager.LoadScene("Victory");
+        SceneManager.LoadScene(2);
     }
 
     public void LoadVictoryScreen()
     {
         hasWon = true;
-        SceneManager.LoadScene("Victory");
+        SceneManager.LoadScene(2);
     }
 
     public void QuitGame()

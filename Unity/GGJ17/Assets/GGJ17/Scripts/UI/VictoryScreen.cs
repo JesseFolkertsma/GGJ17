@@ -1,21 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class VictoryScreen : MonoBehaviour {
-
-    public GameObject win;
-    public GameObject lose;
+    public Text text;
 
     void Start()
     {
         if (GameManager.instance.hasWon)
         {
-            win.SetActive(true);
+            text.text = "Victory!";
         }
         else
         {
-            lose.SetActive(true);
+            text.text = "Defeat";
         }
     }
 

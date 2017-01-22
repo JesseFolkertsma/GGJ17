@@ -29,6 +29,14 @@ public class BaseAI : MonoBehaviour {
         {
             agent.destination = goal.position;
         }
+        else
+        {
+            if (onComplete != null)
+            {
+                onComplete.Invoke();
+                onComplete = null;
+            }
+        }
         float dist = agent.remainingDistance;
         if (dist != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && dist <= agent.stoppingDistance)
         {
