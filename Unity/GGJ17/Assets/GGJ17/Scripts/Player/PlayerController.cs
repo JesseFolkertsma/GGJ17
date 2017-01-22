@@ -6,7 +6,7 @@ using System;
 namespace Corn.Movement
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class PlayerController : MonoBehaviour, IMovement, ILives
+    public class PlayerController : MonoBehaviour, IPickup, ILives
     {
         #region private fields
         private Rigidbody rb;
@@ -22,18 +22,15 @@ namespace Corn.Movement
         [SerializeField]
         GameObject ragdoll;
         GameObject weaponInRightHand;
-        #endregion
-
-        #region Weapons
-        public GameObject hairDryer;
-        public GameObject microWave;
+        bool isDead = false;
         #endregion
 
         #region public fields
+        public LayerMask mask;
         public float walkSpeed;
         public float runSpeed;
         public float rotationSpeed;
-
+        public bool grounded;
         public CameraController cam;
 
         public Transform[] kernelsLocation;
@@ -58,12 +55,10 @@ namespace Corn.Movement
         // Update is called once per frame
         void Update ()
         {
-
+            grounded = Physics.Raycast(transform.position, -transform.up, .1f, mask);
             //MovementInput
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
-
-
 
             yRotationInput = Input.GetAxis("Mouse Y")  * rotationSpeed;
             xRotationInput = Input.GetAxis("Mouse X")  * rotationSpeed;
@@ -71,10 +66,12 @@ namespace Corn.Movement
             //Weapon
             if(currenWeapon != null)
             {
-                if (Input.GetButtonDown("Left Mouse"))
+                if (Input.GetButton("Left Mouse"))
                 {
-                    print("Shoot!");
-                    currenWeapon.Shoot(cam.GetTarget());
+                    if (currenWeapon.Shoot(cam.GetTarget()))
+                    {
+                        anim.SetTrigger("Shoot");
+                    }
                 }
             }
 
@@ -89,7 +86,7 @@ namespace Corn.Movement
             }
             Vector2 direction = new Vector2(horizontal, vertical);
 
-            if (direction != Vector2.zero)
+            if (direction != Vector2.zero && grounded)
             {
                 Move(direction);
             }
@@ -141,17 +138,21 @@ namespace Corn.Movement
         }
         public void Die ()
         {
-            if (health < 5)
+            if (!isDead)
             {
-                if (ragdoll != null)
+                if (health < 1)
                 {
-                    Instantiate(ragdoll, transform.position, transform.rotation);
-                    Destroy(gameObject);
-                    Debug.Log("Die");
-                }
-                else
-                {
-                    Debug.LogWarning("Cant die because ragdoll is not setup!");
+                    if (ragdoll != null)
+                    {
+                        Instantiate(ragdoll, transform.position, transform.rotation);
+                        Destroy(gameObject);
+                        isDead = true;
+                        Debug.Log("Die");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Cant die because ragdoll is not setup!");
+                    }
                 }
             }
         }
@@ -160,12 +161,32 @@ namespace Corn.Movement
         {
             lives += 100;
         }
-        public void SetWeapon (GameObject weapon_)
+        //public void SetWeapon (GameObject weapon_)
+        //{
+        //    if (weaponInRightHand != null)
+        //    {
+        //        Destroy(weaponInRightHand);
+        //    }
+        //    weaponInRightHand = Instantiate(weapon_);
+        //    currenWeapon = weaponInRightHand.GetComponent<IWeapon>();
+        //    currenWeapon.SetLocation(rightHand);
+        //    print(currenWeapon);
+        //}
+        public IWeapon SetWeapon (GameObject go)
         {
-            weaponInRightHand = Instantiate(weapon_);
+            if (weaponInRightHand != null)
+            {
+                Destroy(weaponInRightHand);
+            }
+            weaponInRightHand = Instantiate(go);
             currenWeapon = weaponInRightHand.GetComponent<IWeapon>();
             currenWeapon.SetLocation(rightHand);
             print(currenWeapon);
+            return currenWeapon;
+        }
+        public ILives getLife ()
+        {
+            return this;
         }
         #endregion
 

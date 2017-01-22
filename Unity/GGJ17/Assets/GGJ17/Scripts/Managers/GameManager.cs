@@ -107,4 +107,9 @@ public class GameManager : MonoBehaviour {
         inArena = false;
         SceneManager.LoadScene(0);
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }

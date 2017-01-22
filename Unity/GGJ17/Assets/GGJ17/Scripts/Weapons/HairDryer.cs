@@ -8,14 +8,28 @@ public class HairDryer : MonoBehaviour, IWeapon {
 
     public int ammo;
     public int maxAmmo;
-    public float range = 200f;
+    private float range = 7f;
     public float lifeTime = 20f;
+    public float fireRate = 5f;
     public BulletPool pool;
 
     [SerializeField]
     Transform shootPoint;
-    [SerializeField]
-    GameObject hairDryerProp;
+    float cd;
+
+    public float Range
+    {
+        get
+        {
+            return range;
+        }
+    }
+
+    public float CoolDownTime {
+        get {
+            return 1 / fireRate;
+        }
+    }
 
     void Start()
     {
@@ -52,32 +66,32 @@ public class HairDryer : MonoBehaviour, IWeapon {
         ammo = maxAmmo;
     }
 
-    public void Shoot(Vector3 target)
+    public bool Shoot(Vector3 target)
     {
-        Debug.DrawLine(shootPoint.position, target, Color.red, 10);
-        Debug.Log("Shooting towards: " + target);
-        Vector3 dir = (target - shootPoint.position).normalized;
-        BulletObject wave = pool.GetPooledObject() as BulletObject;
-        wave.ShootBullet(shootPoint.position, Quaternion.LookRotation(dir), lifeTime);
-    }
-
-    public GameObject GetProp()
-    {
-        if(hairDryerProp != null)
+        Debug.Log("BIEM!");
+        if (cd < Time.time)
         {
-            return hairDryerProp;
+            cd = Time.time + 1 / fireRate;
+            Vector3 dir = (target - shootPoint.position).normalized;
+            BulletObject wave = pool.GetPooledObject() as BulletObject;
+            wave.ShootBullet(shootPoint.position, Quaternion.LookRotation(dir), lifeTime);
+            return true;
         }
         else
         {
-            Debug.LogWarning("Hairdryer has no prop assigned!");
-            return null;
+            return false;
         }
     }
-
+    
     public void SetLocation(Transform parent)
     {
         transform.parent = parent;
         transform.localPosition = Vector3.zero;
         transform.rotation = Quaternion.identity;
+    }
+
+    public void SetWeapon (GameObject go)
+    {
+        throw new NotImplementedException();
     }
 }

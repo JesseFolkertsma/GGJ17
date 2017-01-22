@@ -4,14 +4,9 @@ using UnityEngine;
 
 namespace Corn.Movement
 {
-    public interface IMovement
+    public interface IPickup
     {
-        void Move (Vector2 dir_);
-
-        void Rotate (float x, float y);
-
-        void Melee ();
-
-        bool Run();
+        IWeapon SetWeapon (GameObject go);
+        ILives getLife ();
     }
 }

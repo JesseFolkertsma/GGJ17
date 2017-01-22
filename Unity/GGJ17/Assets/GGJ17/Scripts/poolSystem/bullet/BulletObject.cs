@@ -21,13 +21,11 @@ public class BulletObject : BasePoolObject {
         transform.Translate(Vector3.forward * Time.deltaTime * speed);
     }
 
-    void CheckForKernels()
-    {
-
-    }
-
     void OnTriggerEnter(Collider col)
     {
-        col.GetComponent<Kernel>().lives = 0;
+        if (col.GetComponent<Kernel>())
+            col.GetComponent<Kernel>().lives = 0;
+        else
+            Destroy(gameObject);
     }
 }

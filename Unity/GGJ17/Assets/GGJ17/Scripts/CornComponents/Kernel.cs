@@ -30,6 +30,7 @@ public class Kernel : MonoBehaviour, ILives
 
     public void Die ()
     {
+        ParentLife.lives--;
         available = false;
         PopcornObject corn = pool.GetPooledObject() as PopcornObject;
         corn.pop(this.transform);
@@ -43,5 +44,6 @@ public class Kernel : MonoBehaviour, ILives
         available = true;
         lives = 3;
         this.gameObject.SetActive(true);
+        ParentLife.lives++;
     }
 }

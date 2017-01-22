@@ -5,16 +5,22 @@ using Corn.Movement;
 using System;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(Rigidbody))]
-public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
+public class CornAI : MonoBehaviour, IPickup, ILives
+{
 
     public Transform[] kernelsLocation;
     private Kernel[] kernels;
-    public GameObject agentPrefab;
-    //public BaseAI agent;
-    private Rigidbody rb;
+    public BaseAI agent;
+    public GameObject ragdoll;
     public Transform player;
-    private Vector3 moveDirection;
+    IWeapon currenWeapon = null;
+    GameObject target;
+    public GameObject weaponInRightHand;
+    public Transform rightHand;
+    // private Vector3 moveDirection;
+
+    public float Agression;
+    public int fear;
 
 
     private int health;
@@ -25,19 +31,28 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
         }
         set {
             health = value;
+            Die();
         }
     }
-
     public void Die ()
     {
-        throw new NotImplementedException();
+        if (lives <= 0)
+        {
+            Instantiate(ragdoll, this.transform.position, Quaternion.identity);
+            this.gameObject.SetActive(false);
+        }
+        else if (fear < (kernels.Length - lives))
+        {
+            GetHealth();
+        }
     }
 
     public void Heal (int amount)
     {
+        Debug.Log("Heals");
         for (int i = 0; i < kernels.Length; i++)
         {
-            if (kernels[i].available)
+            if (!kernels[i].available)
             {
                 kernels[i].Heal(0);
                 amount--;
@@ -47,53 +62,35 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
         }
     }
 
-    public void Melee ()
-    {
-
-    }
-
-    public void Move (Vector2 dir_)
-    {
-        //moveDirection = (agent.transform.position - transform.position).normalized;
-        //moveDirection = new Vector3(moveDirection.x, 0, moveDirection.z);
-        //rb.velocity = moveDirection * 5;
-
-    }
-
-    public void Rotate (float x, float y)
-    {
-
-        //var localTarget = transform.InverseTransformPoint(agent.transform.position);
-        //float angle = Mathf.Atan2(localTarget.x, localTarget.z) * Mathf.Rad2Deg;
-
-        //transform.eulerAngles = new Vector3(0, angle, 0);
-
-        //this.transform.rotation = agent.transform.rotation;
-
-        //float newAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
-        //Debug.Log(newAngle);
-        //Vector3 wantedYRot = new Vector3(0, 2, 0);
-        //rb.MoveRotation(Quaternion.Euler(wantedYRot));
-    }
-
-    public bool Run ()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void GoTo (Transform trans_)
-    {
-
-    }
-
     public void EvaluateAction ()
     {
-
+        Debug.Log("EVALUATE");
+        if (currenWeapon == null)
+        {
+            GetWeapon();
+        }
+        else
+        {
+            SetAttackmode();
+        }
     }
 
     public void Attack ()
     {
-
+        currenWeapon.Shoot(target.transform.position);
+        if (target.GetComponent<ILives>().lives > 0)
+        {
+            StartCoroutine(waitCooldown(currenWeapon.CoolDownTime));
+        }
+        else
+        {
+            GetWeapon();
+        }
+    }
+    IEnumerator waitCooldown (float amount)
+    {
+        yield return new WaitForSeconds(amount);
+        Attack();
     }
 
     // Use this for initialization
@@ -107,25 +104,75 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
             kernels[i].ParentLife = this;
             sock.Heal(0);
         }
-        lives = kernelsLocation.Length;
 
-        rb = this.GetComponent<Rigidbody>();
 
-        //agent = GameObject.Instantiate(agentPrefab, transform.position, Quaternion.identity).GetComponent<BaseAI>();
-        //agent.goal = player.transform;
-
-        //agent = GetComponent<NavMeshAgent>();
-        //agent.destination = goal.position;
+        agent = GetComponent<BaseAI>();
     }
-
-    void FixedUpdate ()
+    void Start ()
     {
-        //if (agent == null)
-        //    return;
+        lives = kernelsLocation.Length;
+        GetWeapon();
+    }
+    public bool GetWeapon ()
+    {
+        Debug.Log("getweapon");
+        GameObject location = PickupManager.instance.GetPickUp(typeof(WeaponPickup), gameObject);
+        if (location)
+        {
+            agent.setGoal(location.transform, EvaluateAction);
+            agent.agent.stoppingDistance = 0;
+            return true;
+        }
+        return false;
+    }
+    public bool GetHealth ()
+    {
+        Debug.Log("gethealth");
+        if (PickupManager.instance)
+        {
+            GameObject getHealth = PickupManager.instance.GetPickUp(typeof(HealthPickups), gameObject);
+            if (getHealth)
+            {
+                agent.setGoal(getHealth.transform, EvaluateAction);
+                agent.agent.stoppingDistance = 0;
+                return true;
+            }
+        }
+        return false;
 
-        //Move(Vector2.zero);
-        //Rotate(0, 0);
-        //GoTo(goal);
+    }
+    public void SetAttackmode ()
+    {
+        Debug.Log("attackmode");
+        target = EnemyManager.instance.AquireTarget(gameObject);
+        agent.setGoal(target.transform, Attack);
+        agent.agent.stoppingDistance = currenWeapon.Range;
     }
 
+    public IWeapon SetWeapon (GameObject go)
+    {
+        try
+        {
+            if (weaponInRightHand != null)
+            {
+                Destroy(weaponInRightHand);
+            }
+            weaponInRightHand = Instantiate(go);
+            currenWeapon = weaponInRightHand.GetComponent<IWeapon>();
+            currenWeapon.SetLocation(rightHand);
+            print(currenWeapon);
+            EvaluateAction();
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
+
+        return currenWeapon;
+    }
+
+    public ILives getLife ()
+    {
+        return this;
+    }
 }

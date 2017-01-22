@@ -7,7 +7,7 @@ public class Pickup : MonoBehaviour {
 
     public PickupSpawner attachedSpawner;
 
-    public virtual void PickUp(PlayerController pc)
+    public virtual void PickUp(IPickup pc)
     {
         Destroy(gameObject);
         if(attachedSpawner != null)
@@ -16,9 +16,9 @@ public class Pickup : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if(col.tag == "Player")
+        if (col.tag == "Player")
         {
-            PickUp(col.GetComponent<PlayerController>());
+            PickUp(col.GetComponent<IPickup>());
         }
     }
 }

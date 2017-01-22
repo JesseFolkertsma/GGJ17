@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour {
     public Vector3 offset = new Vector3(0, 2, -2);
     public Vector3 zoomOffset = new Vector3(1, 1.5f, -1f);
     public float followSpeed = 5f;
+    public LayerMask mask;
 
     [SerializeField]
     Transform camPosition;
@@ -27,7 +28,7 @@ public class CameraController : MonoBehaviour {
     public Vector3 GetTarget()
     {
         RaycastHit hit;
-        if(Physics.Raycast(transform.position, transform.forward, out hit, 200f))
+        if(Physics.Raycast(transform.position, transform.forward, out hit, 200f, mask))
         {
             return hit.point;
         }
@@ -58,9 +59,23 @@ public class CameraController : MonoBehaviour {
 
             if (Input.GetButtonDown("Right Mouse"))
             {
-                isZoomed = !isZoomed;
+                isZoomed = true;
+            }
+            if (Input.GetButtonUp("Right Mouse"))
+            {
+                isZoomed = false;
+            }
+            if (Input.GetButtonDown("Q"))
+            {
+                SwitchShoulder();
             }
         }
+    }
+
+    public void SwitchShoulder()
+    {
+        offset.x = -offset.x;
+        zoomOffset.x = -zoomOffset.x;
     }
 
     public void Rotate(Vector3 xrot_)

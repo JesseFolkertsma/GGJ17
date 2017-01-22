@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Corn.Movement;
 
 public interface IWeapon {
-    void Shoot(Vector3 target);
+    bool Shoot(Vector3 target);
     void Reload();
-    GameObject GetProp();
     void SetLocation(Transform parent);
+    float Range { get; }
+    float CoolDownTime { get; }
+    //void SetWeapon (GameObject go, IMovement mov);
+    //ILives GetLife ();
+
 }

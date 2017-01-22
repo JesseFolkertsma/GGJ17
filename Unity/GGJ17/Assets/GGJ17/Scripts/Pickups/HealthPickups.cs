@@ -7,9 +7,9 @@ public class HealthPickups : Pickup {
 
     public int healAmount;
 
-    public override void PickUp(PlayerController pc)
+    public override void PickUp(IPickup pc)
     {
         base.PickUp(pc);
-        pc.Heal(healAmount);
+        pc.getLife().Heal(healAmount);
     }
 }
