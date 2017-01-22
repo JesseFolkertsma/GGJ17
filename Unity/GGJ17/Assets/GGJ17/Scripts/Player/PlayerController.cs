@@ -25,10 +25,11 @@ namespace Corn.Movement
         #endregion
 
         #region public fields
+        public LayerMask mask;
         public float walkSpeed;
         public float runSpeed;
         public float rotationSpeed;
-
+        public bool grounded;
         public CameraController cam;
 
         public Transform[] kernelsLocation;
@@ -53,6 +54,7 @@ namespace Corn.Movement
         // Update is called once per frame
         void Update ()
         {
+            grounded = Physics.Raycast(transform.position, -transform.up, .1f, mask);
             //MovementInput
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");
@@ -83,7 +85,7 @@ namespace Corn.Movement
             }
             Vector2 direction = new Vector2(horizontal, vertical);
 
-            if (direction != Vector2.zero)
+            if (direction != Vector2.zero && grounded)
             {
                 Move(direction);
             }
