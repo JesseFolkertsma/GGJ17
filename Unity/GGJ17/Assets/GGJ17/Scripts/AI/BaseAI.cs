@@ -19,8 +19,6 @@ public class BaseAI : MonoBehaviour {
 
     public void setGoal (Transform loc, OnCompleteAction callback)
     {
-        Debug.Log("SETTING GOAL");
-
         goal = loc;
         onComplete = callback;
     }
@@ -36,7 +34,6 @@ public class BaseAI : MonoBehaviour {
         {
             if(onComplete != null)
             {
-                Debug.Log("complete "+ dist);
                 onComplete.Invoke();
                 onComplete = null;
             }

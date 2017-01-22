@@ -24,12 +24,14 @@ public class EnemyManager : MonoBehaviour {
                 }
             }
         }
+        if(closest == null)
+        {
+            print("NO target!");
+        }
         return closest;
     }
-
-	void Awake ()
+    public void Awake ()
     {
         instance = this;
-
-	}
+    }
 }

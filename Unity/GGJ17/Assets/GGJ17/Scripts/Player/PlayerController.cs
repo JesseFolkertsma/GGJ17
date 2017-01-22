@@ -132,7 +132,6 @@ namespace Corn.Movement
 
             set
             {
-                Die();
                 health = value;
             }
         }
@@ -159,19 +158,18 @@ namespace Corn.Movement
 
         public void Heal (int amount)
         {
-            lives += 100;
+            for (int i = 0; i < kernels.Length; i++)
+            {
+                if (!kernels[i].available)
+                {
+                    kernels[i].Heal(0);
+                    amount--;
+                }
+                if (amount == 0)
+                    break;
+            }
         }
-        //public void SetWeapon (GameObject weapon_)
-        //{
-        //    if (weaponInRightHand != null)
-        //    {
-        //        Destroy(weaponInRightHand);
-        //    }
-        //    weaponInRightHand = Instantiate(weapon_);
-        //    currenWeapon = weaponInRightHand.GetComponent<IWeapon>();
-        //    currenWeapon.SetLocation(rightHand);
-        //    print(currenWeapon);
-        //}
+
         public IWeapon SetWeapon (GameObject go)
         {
             if (weaponInRightHand != null)
