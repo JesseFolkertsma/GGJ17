@@ -8,7 +8,7 @@ public class Kernel : MonoBehaviour, ILives
 {
     public ILives ParentLife;
 
-    public bool available;
+    bool available;
 
     private int lives_ = 3;
 
@@ -25,6 +25,26 @@ public class Kernel : MonoBehaviour, ILives
             {
                 Die();
             }
+        }
+    }
+
+    public bool isDead {
+        get {
+            return available;
+        }
+
+        set {
+            available = value;
+        }
+    }
+
+    public int respawnsLeft {
+        get {
+            throw new NotImplementedException();
+        }
+
+        set {
+            throw new NotImplementedException();
         }
     }
 
@@ -46,5 +66,10 @@ public class Kernel : MonoBehaviour, ILives
         lives = 3;
         this.gameObject.SetActive(true);
         ParentLife.lives++;
+    }
+
+    public void Respawn (Transform lol)
+    {
+        throw new NotImplementedException();
     }
 }
