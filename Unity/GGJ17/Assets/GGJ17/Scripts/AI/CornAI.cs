@@ -5,14 +5,20 @@ using Corn.Movement;
 using System;
 using UnityEngine.AI;
 
-public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
+public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy
+{
 
     public Transform[] kernelsLocation;
     private Kernel[] kernels;
     public BaseAI agent;
     public GameObject ragdoll;
     public Transform player;
-   // private Vector3 moveDirection;
+    IWeapon currenWeapon;
+    GameObject target;
+    // private Vector3 moveDirection;
+
+    public float Agression;
+    public int fear;
 
 
     private int health;
@@ -31,9 +37,17 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
     {
         if (lives <= 0)
         {
-            Instantiate(ragdoll, this.transform.position, transform.rotation);
+            Instantiate(ragdoll, this.transform.position, Quaternion.identity);
             this.gameObject.SetActive(false);
-
+        }
+        else if (fear > (kernels.Length - lives))
+        {
+            GameObject getHealth = PickupManager.instance.GetPickUp(typeof(HealthPickups));
+            if (getHealth)
+            {
+                agent.setGoal(getHealth.transform, EvaluateAction);
+                agent.agent.stoppingDistance = 0;
+            }
         }
     }
 
@@ -58,12 +72,43 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
 
     public void EvaluateAction ()
     {
+        Debug.Log("EVALUATE");
+        if (currenWeapon == null)
+        {
+            GameObject location = PickupManager.instance.GetPickUp(typeof(WeaponPickup));
+            agent.setGoal(location.transform, EvaluateAction);
+            agent.agent.stoppingDistance = 0;
+            return;
+        }
+        target = EnemyManager.instance.AquireTarget(gameObject);
+        agent.setGoal(target.transform, Attack);
+
 
     }
 
     public void Attack ()
     {
+        currenWeapon.Shoot(target.transform.position);
+        if (target.GetComponent<ILives>().lives > 0)
+        {
+            //if (!currenWeapon.Shoot(target.transform.position))
+            //{
 
+            //}
+            //if()
+            Attack();
+        }
+        else
+        {
+            GameObject location = PickupManager.instance.GetPickUp(typeof(WeaponPickup));
+            agent.setGoal(location.transform, EvaluateAction);
+            agent.agent.stoppingDistance = 0;
+            return;
+        }
+    }
+    IEnumerator waitCooldown ()
+    {
+        yield return new WaitForSeconds(1);
     }
 
     // Use this for initialization
@@ -81,12 +126,15 @@ public class CornAI : MonoBehaviour, IMovement, ILives, IEnemy {
         lives = kernelsLocation.Length;
 
         agent = GetComponent<BaseAI>();
-
     }
     void start ()
     {
-        GoTo(player);
-
+        if (currenWeapon == null)
+        {
+            Transform location = PickupManager.instance.GetPickUp(typeof(WeaponPickup)).transform;
+            agent.setGoal(location, EvaluateAction);
+            agent.agent.stoppingDistance = 0;
+        }
     }
 
     public void Move (Vector2 dir_)
