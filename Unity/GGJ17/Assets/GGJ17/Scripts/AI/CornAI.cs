@@ -23,8 +23,8 @@ public class CornAI : MonoBehaviour, IPickup, ILives
 
     public float Agression;
     public int fear;
-
-
+    Animator anim;
+    
     private int health;
 
     public int lives {
@@ -52,6 +52,18 @@ public class CornAI : MonoBehaviour, IPickup, ILives
         else
         {
             SetAttackmode();
+        }
+    }
+
+    void Update()
+    {
+        if(agent.goal != null)
+        {
+            anim.SetFloat("Movement", 1f);
+        }
+        else
+        {
+            anim.SetFloat("Movement", 0f);
         }
     }
 
@@ -132,9 +144,11 @@ public class CornAI : MonoBehaviour, IPickup, ILives
     {
         lives = kernelsLocation.Length;
         GetWeapon();
+        anim = GetComponentInChildren<Animator>();
     }
     public bool GetWeapon ()
     {
+        print("getweapon");
         GameObject location = PickupManager.instance.GetPickUp(typeof(WeaponPickup), gameObject);
         if (location)
         {
