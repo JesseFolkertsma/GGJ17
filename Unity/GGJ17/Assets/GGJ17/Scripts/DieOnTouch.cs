@@ -13,8 +13,6 @@ public class DieOnTouch : MonoBehaviour {
                 if (!k.isDead)
                     k.Die();
             }
-            //col.GetComponent<ILives>().lives = 0;
-            //col.GetComponent<ILives>().Die();
         }
     }
 }
