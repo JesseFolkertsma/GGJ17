@@ -10,8 +10,7 @@ public class HairDryer : MonoBehaviour, IWeapon {
     public int ammo;
     public int maxAmmo;
     private float range = 6f;
-    public float lifeTime = 20f;
-    public float fireRate = 5f;
+    public float fireRate = 2.5f;
     public BulletPool pool;
 
     [SerializeField]
@@ -74,7 +73,7 @@ public class HairDryer : MonoBehaviour, IWeapon {
             cd = Time.time + 1 / fireRate;
             Vector3 dir = (target - shootPoint.position).normalized;
             BulletObject wave = pool.GetPooledObject() as BulletObject;
-            wave.ShootBullet(shootPoint.position, Quaternion.LookRotation(dir), lifeTime);
+            wave.ShootBullet(shootPoint.position, Quaternion.LookRotation(dir));
             return true;
         }
         else

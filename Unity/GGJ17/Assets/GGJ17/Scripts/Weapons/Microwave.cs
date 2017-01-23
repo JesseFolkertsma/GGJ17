@@ -10,7 +10,6 @@ public class Microwave : MonoBehaviour, IWeapon {
     public int ammo;
     public int maxAmmo;
     private float range = 3;
-    public float lifeTime = 20f;
     public float fireRate = .3f;
     public BulletPool pool;
 
@@ -74,7 +73,7 @@ public class Microwave : MonoBehaviour, IWeapon {
             cd = Time.time + 1 / fireRate;
             Vector3 dir = (target - shootPoint.position).normalized;
             BulletObject wave = pool.GetPooledObject() as BulletObject;
-            wave.ShootBullet(shootPoint.position, Quaternion.LookRotation(dir), lifeTime);
+            wave.ShootBullet(shootPoint.position, Quaternion.LookRotation(dir));
             return true;
         }
         else

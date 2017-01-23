@@ -79,15 +79,11 @@ namespace Corn.AI
                 SpawnManger.instance.Respawn(this);
 
             }
-            else if (fear > (kernels.Length - lives))
+            else if (fear > lives)
             {
-                if (!gettingHealth && !GetHealth())
+                if (!gettingHealth )
                 {
-                        if (currenWeapon != null)
-                            SetAttackmode();
-                        else
-                            GetWeapon();
-                   
+                    GetHealth();
                 }
             }
             else
