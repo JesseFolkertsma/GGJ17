@@ -10,7 +10,7 @@ public class EnemyManager : MonoBehaviour {
 
     public GameObject[] Enemys;
     public bool PlayerTeam;
-    GameObject player;
+    public GameObject player;
     int deadEnemies;
 
     void Start()

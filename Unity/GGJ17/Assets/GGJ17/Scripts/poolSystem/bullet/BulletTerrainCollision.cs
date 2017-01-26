@@ -9,7 +9,6 @@ public class BulletTerrainCollision : MonoBehaviour {
         if(col.gameObject.layer == LayerMask.NameToLayer("Terrain"))
         {
             GetComponentInParent<BulletObject>().SetDisable();
-            Debug.Log("terrain collision" + col.name);
         }
     }
 }
