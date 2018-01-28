@@ -20,8 +20,8 @@ namespace Corn.Controller
         {
             PlayerController p = FindObjectOfType<PlayerController>();
             p.cam = this;
-            camRotation = p.transform.FindChild("CameraRotate");
-            camPosition = camRotation.FindChild("CameraPosition");
+            camRotation = p.transform.Find("CameraRotate");
+            camPosition = camRotation.Find("CameraPosition");
         }
 
         public Vector3 GetTarget ()
